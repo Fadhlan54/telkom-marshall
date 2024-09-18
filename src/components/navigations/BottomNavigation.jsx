@@ -1,0 +1,79 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { GoBook, GoHome, GoVideo } from "react-icons/go";
+import {
+  RiBookLine,
+  RiHistoryFill,
+  RiHome2Fill,
+  RiHomeFill,
+  RiHomeLine,
+  RiSettings3Line,
+} from "react-icons/ri";
+
+export default function BottomNavigation() {
+  const [visible, setVisible] = useState(true);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+
+      if (prevScrollPos > currentScrollPos || currentScrollPos < 10) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [prevScrollPos]);
+
+  return (
+    <>
+      <div className="h-4 w-full sm:hidden"></div>
+      <div
+        className={`fixed bottom-0 left-0 z-40 flex w-full justify-evenly bg-white pt-2 text-2xl border-t shadow-top-md text-neutral-600 transition-transform 
+duration-300 sm:hidden ${visible ? "translate-y-0" : "translate-y-full"} `}
+      >
+        <Link
+          href={"/"}
+          className="rounded-t-2xl px-4 py-1 bg-neutral-300 text-white flex flex-col items-center"
+        >
+          <RiHomeLine />
+          <p className="text-xs mt-0.5">Home</p>
+        </Link>
+        <Link
+          href={"/"}
+          className="rounded-t-2xl px-4 py-1  flex flex-col items-center"
+        >
+          <RiHistoryFill className="icon" />
+          <p className="text-xs mt-0.5 text-center">
+            Request <br /> History
+          </p>
+        </Link>
+        <Link
+          href={"/"}
+          className="rounded-t-2xl px-4 py-1  flex flex-col items-center"
+        >
+          <RiBookLine />
+          <p className="text-xs mt-0.5">E-library</p>
+        </Link>
+        <Link
+          href={"/"}
+          className="rounded-t-2xl px-4 py-1  flex flex-col items-center"
+        >
+          <RiSettings3Line />
+          <p className="text-xs mt-0.5">Settings</p>
+        </Link>
+      </div>
+    </>
+  );
+}
