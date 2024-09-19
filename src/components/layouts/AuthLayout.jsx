@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Toast from "../Toast";
+import Toast from "../fragments/Toast";
 
 export default function AuthLayout({ children }) {
   return (

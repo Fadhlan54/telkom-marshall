@@ -2,12 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { GoBook, GoHome, GoVideo } from "react-icons/go";
 import {
   RiBookLine,
   RiHistoryFill,
-  RiHome2Fill,
-  RiHomeFill,
   RiHomeLine,
   RiSettings3Line,
 } from "react-icons/ri";
@@ -38,10 +35,10 @@ export default function BottomNavigation() {
 
   return (
     <>
-      <div className="h-4 w-full sm:hidden"></div>
+      <div className="h-[4.5rem] w-full sm:hidden"></div>
       <div
-        className={`fixed bottom-0 left-0 z-40 flex w-full justify-evenly bg-white pt-2 text-2xl border-t shadow-top-md text-neutral-600 transition-transform 
-duration-300 sm:hidden ${visible ? "translate-y-0" : "translate-y-full"} `}
+        className={`fixed bottom-0 left-0  h-[4.5rem] flex w-full justify-evenly bg-white pt-2 text-2xl border-t shadow-top-md text-neutral-600 transition-transform 
+duration-300 sm:hidden ${visible ? "translate-y-0" : "translate-y-full"}  `}
       >
         <Link
           href={"/"}

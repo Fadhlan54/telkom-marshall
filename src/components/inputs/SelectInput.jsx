@@ -1,19 +1,18 @@
-import { useEffect } from "react";
+"use client";
+
+import { useEffect, useRef } from "react";
+import { RiArrowDownSLine } from "react-icons/ri";
 
 export default function SelectInput({
-  stateValue,
   setStateValue,
   label,
   id,
   options = [],
   required = false,
 }) {
+  const selectRef = useRef(null);
+
   useEffect(() => {
-    if (!stateValue && stateValue !== null) {
-      throw new Error(
-        "The 'stateValue' prop is required in SelectInput component."
-      );
-    }
     if (!setStateValue) {
       throw new Error(
         "The 'setStateValue' prop is required in SelectInput component."
@@ -25,21 +24,50 @@ export default function SelectInput({
     if (!label) {
       throw new Error("The 'label' prop is required in SelectInput component.");
     }
-  });
+    if (!options || options.length === 0) {
+      throw new Error(
+        "The 'options' prop is required in SelectInput component."
+      );
+    }
+    if (options) {
+      if (!Array.isArray(options)) {
+        throw new Error(
+          "The 'options' prop must be an array in SelectInput component."
+        );
+      }
+      options.forEach((option) => {
+        if (!option.label || !option.value) {
+          throw new Error(
+            "The 'options' prop must be an array of objects with 'label' and 'value' properties in SelectInput component."
+          );
+        }
+      });
+    }
+  }, [setStateValue, id, label, options]);
   return (
     <div className="flex flex-col gap-1 text-sm">
-      <label htmlFor="competence-level" className="font-semibold">
+      <label htmlFor={id} className="font-semibold">
         {label} {required && <span className="text-alert-danger">*</span>}
       </label>
-      <select
-        name="competence-level"
-        id="competence-level"
-        className="w-full border-2 border-neutral-400 p-2 rounded-lg"
-      >
-        <option value="1">Kompetensi 1</option>
-        <option value="2">Kompetensi 2</option>
-        <option value="3">Kompetensi 3</option>
-      </select>
+      <div className="relative">
+        <select
+          name={id}
+          id={id}
+          className="w-full border-2 border-neutral-400 p-2 rounded-lg appearance-none"
+          ref={selectRef}
+          onChange={(e) => setStateValue(e.target.value)}
+        >
+          {options.map((item, index) => (
+            <option key={index} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">
+          <RiArrowDownSLine className=" w-5 h-5" />
+        </div>
+      </div>
     </div>
   );
 }

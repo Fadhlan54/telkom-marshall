@@ -22,7 +22,16 @@ module.exports = {
       },
       animation: {
         "spin-slow": "spin 2.5s ease-in-out infinite",
+        "spin-fast-to-slow": "spin-fast-to-slow 3s ease-in-out infinite",
       },
+      keyframes: {
+        "spin-fast-to-slow": {
+          "0%": { transform: "rotate(0deg)" },
+          "50%": { transform: "rotate(270deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+      },
+
       boxShadow: {
         top: "0 -1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
         "top-md":

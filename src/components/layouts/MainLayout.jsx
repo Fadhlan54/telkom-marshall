@@ -5,19 +5,20 @@ import Navbar from "../navigations/Navbar";
 import SideNavigation from "../navigations/SideNavigation";
 import { selectIsSideNavVisible } from "@/lib/slices/navbarSlice";
 import { useSelector } from "react-redux";
-import Toast from "../Toast";
+import Toast from "../fragments/Toast";
 
 export default function MainLayout({ children }) {
   const isSideNavVisible = useSelector(selectIsSideNavVisible);
 
   return (
-    <div className="max-h-screen overflow-hidden">
+    <div className="max-h-screen sm:overflow-hidden">
       <Toast />
       <Navbar />
       <div className="flex">
         {isSideNavVisible && <SideNavigation />}
-        <main className="w-full px-4 py-4 md:p-6 overflow-y-auto max-h-[calc(100vh_-_4rem)]">
+        <main className="w-full px-4 py-4 md:p-6 sm:overflow-y-auto max-h-[calc(100vh_-_4rem)]">
           {children}
+
           <BottomNavigation />
         </main>
       </div>

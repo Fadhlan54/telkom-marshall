@@ -13,7 +13,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <StoreProvider>
-        <body className={`${rubik.className} antialiased`}>{children}</body>
+        <body className={`${rubik.className} antialiased max-h-screen`}>
+          {children}
+        </body>
       </StoreProvider>
     </html>
   );

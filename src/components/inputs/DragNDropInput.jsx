@@ -86,7 +86,10 @@ export default function DragNDropInput({
   };
   return (
     <div className="w-full">
-      <label htmlFor={id} className="block font-semibold hover:cursor-pointer">
+      <label
+        htmlFor={id}
+        className="block font-semibold hover:cursor-pointer text-sm"
+      >
         {label} {required && <span className="text-alert-danger">*</span>}
       </label>
       <div
