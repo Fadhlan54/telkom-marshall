@@ -18,7 +18,7 @@ export default function Home() {
       <CreateLayout>
         <div className="flex flex-wrap gap-2 justify-between">
           <div>
-            <p className="font-semibold leading-4">Halo, Raihan</p>
+            <p className="font-semibold leading-4">Halo, Admin</p>
             <p className="text-sm text-neutral-400">
               Let&apos;s start your project review now!{" "}
             </p>
@@ -38,15 +38,24 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="my-4 flex flex-wrap md:flex-nowrap gap-2 ">
-          <div className="w-full sm:w-1/2 md:5/12 flex flex-col gap-1 justify-between mb-4">
-            <p className="font-semibold leading-4">Start your project</p>
-            <div className="flex flex-col gap-2 h-40">
+        <div className="my-4 flex flex-wrap lg:flex-nowrap gap-2 ">
+          <div className="w-full sm:w-7/12 lg:5/12 mb-4 flex flex-col justify-between">
+            <div>
+              <p className="font-semibold leading-4">Project</p>
+              <p className="text-sm mb-2 text-neutral-400">
+                New Project, New Opportunity, Start Now
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2 h-48">
               <Link
                 href={"/"}
                 className="bg-neutral-200 p-4 flex items-center gap-2 h-1/2 rounded-xl"
               >
-                <RiFileAddLine className="h-full w-auto" />
+                <div className="h-full py-2">
+                  <RiFileAddLine className="h-full w-auto" />
+                </div>
+
                 <div>
                   <p className="text-sm md:text-base font-semibold leading-4">
                     Create
@@ -60,7 +69,10 @@ export default function Home() {
                 href={"/"}
                 className="bg-neutral-200 p-4 flex items-center gap-2 h-1/2 rounded-xl"
               >
-                <RiBook3Line className="h-full w-auto" />
+                <div className="h-full py-2">
+                  <RiBook3Line className="h-full w-auto" />
+                </div>
+
                 <div>
                   <p className="text-sm md:text-base font-semibold leading-4">
                     E-Library
@@ -78,7 +90,7 @@ export default function Home() {
             <p className="text-sm mb-2 text-neutral-400">
               Select reference that you need
             </p>
-            <div className="flex gap-2 w-full h-40  ">
+            <div className="flex gap-2 w-full h-48  ">
               <div className="w-1/3 bg-neutral-200 rounded-xl"></div>
               <div className="w-1/3  bg-neutral-200 rounded-xl"></div>
               <div className="w-1/3 bg-neutral-200 rounded-xl"></div>
@@ -91,36 +103,36 @@ export default function Home() {
             <table className="text-xs table border-spacing-y-2 border-separate w-full">
               <thead>
                 <tr className="bg-neutral-200 border-white table-row">
-                  <th className="font-semibold px-4 py-1 border-l-8 border-neutral-500 rounded-s-lg text-start">
+                  <th className="font-semibold px-2 py-1 border-l-8 border-neutral-500 rounded-s-lg text-start">
                     Date
                   </th>
-                  <th className="font-semibold px-4 py-1 text-start">Type</th>
-                  <th className="font-semibold px-4 py-1 rounded-e-lg text-start">
+                  <th className="font-semibold px-2 py-1 text-start">Type</th>
+                  <th className="font-semibold ps-2 pe-4 py-1 rounded-e-lg text-start">
                     Status
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="bg-neutral-200 text-neutral-600">
-                  <td className=" py-1 px-4 border-l-8 border-neutral-500 rounded-s-lg">
+                  <td className=" py-1 px-2 border-l-8 border-neutral-500 rounded-s-lg">
                     Wed, 18 Sep 2024 13:35:34
                   </td>
-                  <td className="px-4 py-1">Generate Module</td>
-                  <td className="px-4 py-1 rounded-e-lg">Waiting</td>
+                  <td className="px-2 py-1">Generate Module</td>
+                  <td className="ps-2 pe-4 py-1 rounded-e-lg">Waiting</td>
                 </tr>
                 <tr className="bg-neutral-200 text-neutral-600">
-                  <td className=" py-1 px-4 border-l-8 border-neutral-500 rounded-s-lg ">
+                  <td className=" py-1 px-2 border-l-8 border-neutral-500 rounded-s-lg ">
                     Wed, 18 Sep 2024 13:35:34
                   </td>
-                  <td className="px-4 py-1">Generate Module</td>
-                  <td className="px-4 py-1 rounded-e-lg">Waiting</td>
+                  <td className="px-2 py-1">Generate Module</td>
+                  <td className="ps-2 pe-4 py-1 rounded-e-lg">Waiting</td>
                 </tr>
                 <tr className="bg-neutral-200 rounded-lg text-neutral-600">
-                  <td className=" py-1 px-4 border-l-8 border-neutral-500 rounded-s-lg">
+                  <td className=" py-1 px-2 border-l-8 border-neutral-500  rounded-s-lg">
                     Wed, 18 Sep 2024 13:35:34
                   </td>
-                  <td className="px-4 py-1">Generate Module</td>
-                  <td className="px-4 py-1 rounded-e-lg">Waiting</td>
+                  <td className="px-2 py-1">Generate Module</td>
+                  <td className="ps-2 pe-4 py-1 rounded-e-lg">Waiting</td>
                 </tr>
               </tbody>
             </table>
