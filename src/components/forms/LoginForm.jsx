@@ -4,8 +4,10 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import Link from "next/link";
 import { openToast } from "@/lib/slices/toastSlice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function LoginForm() {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
@@ -13,10 +15,22 @@ export default function LoginForm() {
     e.preventDefault();
     if (username === "admin" && password === "admin") {
       setIsError(false);
-      handleToast("Login Successful", "success", 3000, "/");
+      dispatch(
+        openToast({
+          message: "Login Success",
+          type: "success",
+          duration: 3000,
+        })
+      );
     } else {
       setIsError(true);
-      handleToast("Wrong Username or Password", "danger");
+      dispatch(
+        openToast({
+          message: "Invalid username or password",
+          type: "danger",
+          duration: 3000,
+        })
+      );
     }
   };
 
