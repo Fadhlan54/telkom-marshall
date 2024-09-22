@@ -16,14 +16,14 @@ export default function Home() {
   return (
     <MainLayout>
       <CreateLayout>
-        <div className="flex flex-wrap gap-2 justify-between">
+        <div className="flex flex-wrap gap-4 justify-between">
           <div>
             <p className="font-semibold leading-4">Halo, Admin</p>
             <p className="text-sm text-neutral-400">
               Let&apos;s start your project review now!{" "}
             </p>
           </div>
-          <div className="text-neutral-600 text-sm flex h-fit">
+          <div className="text-neutral-600 text-sm flex w-full sm:max-w-64 h-fit">
             <label
               htmlFor="search-reference"
               className="flex items-center bg-neutral-200 p-2 rounded-s-lg"
@@ -32,14 +32,14 @@ export default function Home() {
             </label>
             <input
               type="text"
-              className="bg-neutral-200 rounded-e-lg outline-none w-[100%] max-w-60 py-2 pe-4 block"
+              className="bg-neutral-200 rounded-e-lg outline-none w-full py-2 pe-4 block"
               id="search-reference"
               placeholder="Search reference"
             />
           </div>
         </div>
-        <div className="my-4 flex flex-wrap lg:flex-nowrap gap-2 ">
-          <div className="w-full sm:w-7/12 lg:5/12 mb-4 flex flex-col justify-between">
+        <div className="my-4 flex flex-wrap-reverse md:flex-nowrap gap-2 ">
+          <div className="w-full sm:w-7/12 md:5/12 mb-2 flex flex-col justify-between">
             <div>
               <p className="font-semibold leading-4">Project</p>
               <p className="text-sm mb-2 text-neutral-400">
@@ -85,12 +85,12 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full sm:w-10/12 md:7/12 ">
+          <div className="w-full sm:w-10/12 md:w-7/12 ">
             <p className="font-semibold leading-4">Reference</p>
             <p className="text-sm mb-2 text-neutral-400">
               Select reference that you need
             </p>
-            <div className="flex gap-2 w-full h-48  ">
+            <div className="flex gap-2 w-full h-48 mb-2">
               <div className="w-1/3 bg-neutral-200 rounded-xl"></div>
               <div className="w-1/3  bg-neutral-200 rounded-xl"></div>
               <div className="w-1/3 bg-neutral-200 rounded-xl"></div>
