@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RiArrowDownSLine, RiArrowUpSLine, RiMenuLine } from "react-icons/ri";
 
-import { toggleSideNav } from "@/lib/slices/navbarSlice";
+import {
+  toggleFullSideNav,
+  toggleOffCanvasSideNav,
+} from "@/lib/slices/navbarSlice";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 
@@ -12,22 +15,55 @@ export default function Navbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const dispatch = useDispatch();
 
+  const profileRef = useRef(null);
+
   const toggleProfileMenu = (e) => {
     e.preventDefault();
     setShowProfileMenu(!showProfileMenu);
   };
 
-  const handleSideNav = (e) => {
+  const handleFullSideNav = (e) => {
     e.preventDefault();
-    dispatch(toggleSideNav());
+    dispatch(toggleFullSideNav());
   };
+
+  const handleOffCanvasSideNav = (e) => {
+    e.preventDefault();
+    dispatch(toggleOffCanvasSideNav());
+  };
+
+  const handleClickOutsideProfile = (event) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setShowProfileMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showProfileMenu) {
+      document.addEventListener("mousedown", handleClickOutsideProfile);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutsideProfile);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideProfile);
+    };
+  }, [showProfileMenu]);
   return (
     <>
       <div className="w-full h-16"></div>
       <nav className="bg-white fixed top-0 z-50  w-full border-b border-neutral-400 flex justify-between px-4 md:px-6 items-center h-16">
         <div className="flex gap-3 md:gap-4 items-center">
-          <button>
-            <RiMenuLine className="w-5 h-5" onClick={(e) => handleSideNav(e)} />
+          <button className="lg:hidden">
+            <RiMenuLine
+              className="w-5 h-5"
+              onClick={(e) => handleOffCanvasSideNav(e)}
+            />
+          </button>
+          <button className="hidden lg:block">
+            <RiMenuLine
+              className="w-5 h-5"
+              onClick={(e) => handleFullSideNav(e)}
+            />
           </button>
 
           <Image
@@ -57,7 +93,10 @@ export default function Navbar() {
           </button>
 
           {showProfileMenu && (
-            <div className="border absolute top-10 right-0 p-4 bg-white rounded-lg shadow-md">
+            <div
+              className="border absolute top-10 right-0 p-4 bg-white rounded-lg shadow-md"
+              ref={profileRef}
+            >
               <p>admin@telkom.com</p>
               <p>administrator</p>
               <p>Profile</p>

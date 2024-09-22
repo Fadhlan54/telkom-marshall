@@ -4,8 +4,9 @@ export const navbarSlice = createSlice({
   name: "navbar",
   initialState: {
     isSideNavVisible: false,
-    isFullSideNavVisible: false,
+    isFullSideNavVisible: true,
     isMiniSideNavVisible: false,
+    isOffCanvasSideNavVisible: false,
   },
   reducers: {
     setIsSideNavVisible: (state, action) => {
@@ -16,6 +17,13 @@ export const navbarSlice = createSlice({
     },
     setIsMiniSideNavVisible: (state, action) => {
       state.isMiniSideNavVisible = action.payload;
+    },
+    toggleFullSideNav: (state) => {
+      state.isFullSideNavVisible = !state.isFullSideNavVisible;
+    },
+
+    toggleOffCanvasSideNav: (state) => {
+      state.isOffCanvasSideNavVisible = !state.isOffCanvasSideNavVisible;
     },
     toggleSideNav: (state) => {
       if (state.isSideNavVisible) {
@@ -48,8 +56,12 @@ export const navbarSlice = createSlice({
   },
 });
 
-export const { setIsSideNavVisible, toggleSideNav, toggleSideNavType } =
-  navbarSlice.actions;
+export const {
+  setIsSideNavVisible,
+  toggleSideNavType,
+  toggleFullSideNav,
+  toggleOffCanvasSideNav,
+} = navbarSlice.actions;
 
 export const selectIsSideNavVisible = (state) => state.navbar.isSideNavVisible;
 
@@ -58,5 +70,8 @@ export const selectIsFullSideNavVisible = (state) =>
 
 export const selectIsMiniSideNavVisible = (state) =>
   state.navbar.isMiniSideNavVisible;
+
+export const selectIsOffCanvasSideNavVisible = (state) =>
+  state.navbar.isOffCanvasSideNavVisible;
 
 export default navbarSlice.reducer;
