@@ -12,22 +12,15 @@ import {
   RiBook3Line,
 } from "react-icons/ri";
 
-import { toggleSideNavType } from "@/lib/slices/navbarSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectIsFullSideNavVisible } from "@/lib/slices/navbarSlice";
 import Link from "next/link";
+import { BsDot } from "react-icons/bs";
 
 export default function FullSideNavigation() {
   const isFullSideNavVisible = useSelector(selectIsFullSideNavVisible);
   const [isCreateMenuVisible, setIsCreateMenuVisible] = useState(false);
   const [isManipulateMenuVisible, setIsManipulateMenuVisible] = useState(false);
-
-  const dispatch = useDispatch();
-
-  const toggleNavType = (e) => {
-    e.preventDefault();
-    dispatch(toggleSideNavType());
-  };
 
   const toggleMenu = (e, type) => {
     e.preventDefault();
@@ -82,7 +75,7 @@ export default function FullSideNavigation() {
                       href="/review"
                       className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
                     >
-                      <RiArrowDropRightLine className="w-5 h-5 mr-1" />
+                      <BsDot className="w-5 h-5 mr-1" />
                       Review Module
                     </Link>
                   </li>
@@ -91,7 +84,7 @@ export default function FullSideNavigation() {
                       href="/module"
                       className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
                     >
-                      <RiArrowDropRightLine className="w-5 h-5 mr-1" />
+                      <BsDot className="w-5 h-5 mr-1" />
                       Generate Module
                     </Link>
                   </li>
@@ -100,24 +93,21 @@ export default function FullSideNavigation() {
                       href="/e-book"
                       className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
                     >
-                      <RiArrowDropRightLine className="w-5 h-5 mr-1" />
+                      <BsDot className="w-5 h-5 mr-1" />
                       Update Ebook
                     </Link>
                   </li>
                   <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
-                    <RiArrowDropRightLine className="w-5 h-5 mr-1" /> CoQa
+                    <BsDot className="w-5 h-5 mr-1" /> CoQa
                   </li>
                   <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
-                    <RiArrowDropRightLine className="w-5 h-5 mr-1" /> Mapping
-                    Dirkom
+                    <BsDot className="w-5 h-5 mr-1" /> Mapping Dirkom
                   </li>
                   <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
-                    <RiArrowDropRightLine className="w-5 h-5 mr-1" /> Audio
-                    Learning
+                    <BsDot className="w-5 h-5 mr-1" /> Audio Learning
                   </li>
                   <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
-                    <RiArrowDropRightLine className="w-5 h-5 mr-1" /> Video
-                    Learning
+                    <BsDot className="w-5 h-5 mr-1" /> Video Learning
                   </li>
                 </ul>
               </div>

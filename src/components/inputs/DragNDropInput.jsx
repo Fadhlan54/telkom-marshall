@@ -1,8 +1,10 @@
 "use client";
 
+import { showToastWithTimeout } from "@/lib/slices/toastSlice";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { RiCloseFill } from "react-icons/ri";
+import { useDispatch } from "react-redux";
 
 export default function DragNDropInput({
   stateFile,
@@ -12,6 +14,7 @@ export default function DragNDropInput({
   id,
   required = false,
 }) {
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!stateFile && stateFile !== null) {
       throw new Error(
@@ -45,8 +48,33 @@ export default function DragNDropInput({
     e.preventDefault();
     const file = e.target.files[0];
     if (type === "ppt") {
+      if (
+        file?.type !==
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      ) {
+        setStateFile(null);
+        dispatch(
+          showToastWithTimeout({
+            type: "danger",
+            message: "Only PPT files are allowed",
+            duration: 4000,
+          })
+        );
+        return;
+      }
       setStateFile(file);
     } else if (type === "pdf") {
+      if (file?.type !== "application/pdf") {
+        setStateFile(null);
+        dispatch(
+          showToastWithTimeout({
+            type: "danger",
+            message: "Only PDF files are allowed",
+            duration: 4000,
+          })
+        );
+        return;
+      }
       setStateFile(file);
     } else if (type === "all") {
       setStateFile(file);
@@ -71,12 +99,26 @@ export default function DragNDropInput({
     if (type === "ppt" || type === "pptx") {
       if (fileExt !== "pptx" && fileExt !== "ppt") {
         setStateFile(null);
+        dispatch(
+          showToastWithTimeout({
+            type: "danger",
+            message: "Only PPT files are allowed",
+            duration: 4000,
+          })
+        );
         return;
       }
       setStateFile(file);
     } else if (type === "pdf") {
       if (fileExt !== "pdf") {
         setStateFile(null);
+        dispatch(
+          showToastWithTimeout({
+            type: "danger",
+            message: "Only PDF files are allowed",
+            duration: 4000,
+          })
+        );
         return;
       }
       setStateFile(file);

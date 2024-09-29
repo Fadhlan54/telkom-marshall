@@ -1,9 +1,6 @@
-"use client";
-
 import BottomNavigation from "../navigations/BottomNavigation";
 import Navbar from "../navigations/Navbar";
 import SideNavigation from "../navigations/SideNavigation";
-import { useSelector } from "react-redux";
 import Toast from "../fragments/Toast";
 
 export default function MainLayout({ children }) {
@@ -15,7 +12,6 @@ export default function MainLayout({ children }) {
         <SideNavigation />
         <main className="w-full px-4 py-4 md:p-6 sm:overflow-y-auto max-h-[calc(100vh_-_4rem)]">
           {children}
-
           <BottomNavigation />
         </main>
       </div>

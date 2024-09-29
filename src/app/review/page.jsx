@@ -112,7 +112,7 @@ export default function ReviewPage() {
                   />
                   <label htmlFor="review-2">Review 2</label>
                 </div>
-                <div className="flex items-center gap-1 mb-1">
+                {/* <div className="flex items-center gap-1 mb-1">
                   <input
                     type="checkbox"
                     name="auto-crawling"
@@ -121,10 +121,10 @@ export default function ReviewPage() {
                     onChange={(e) => setCheckboxAutoCrawling(e.target.checked)}
                   />
                   <label htmlFor="auto-crawling">Auto Crawling</label>
-                </div>
+                </div> */}
               </div>
             </div>
-            <div>
+            {/* <div>
               <label htmlFor="ratio" className="block text-sm">
                 Ratio Database
               </label>
@@ -139,7 +139,7 @@ export default function ReviewPage() {
                 onChange={(e) => setDbRatio(e.target.value)}
               />
               <p className="text-xs">Ratio: {dbRatio}%</p>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex flex-wrap md:flex-nowrap gap-8 mt-4">

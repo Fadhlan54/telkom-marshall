@@ -17,6 +17,7 @@ import {
 } from "@/lib/slices/navbarSlice";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
+import { BsDot } from "react-icons/bs";
 
 export default function OffCanvasNavigation() {
   const isOffCanvasVisible = useSelector(selectIsOffCanvasSideNavVisible);
@@ -100,7 +101,7 @@ export default function OffCanvasNavigation() {
                         href="/review"
                         className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
                       >
-                        <RiArrowDropRightLine className="w-5 h-5 mr-1" />
+                        <BsDot className="w-5 h-5 mr-1" />
                         Review Module
                       </Link>
                     </li>
@@ -109,7 +110,7 @@ export default function OffCanvasNavigation() {
                         href="/module"
                         className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
                       >
-                        <RiArrowDropRightLine className="w-5 h-5 mr-1" />
+                        <BsDot className="w-5 h-5 mr-1" />
                         Generate Module
                       </Link>
                     </li>
@@ -118,24 +119,21 @@ export default function OffCanvasNavigation() {
                         href="/e-book"
                         className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
                       >
-                        <RiArrowDropRightLine className="w-5 h-5 mr-1" />
+                        <BsDot className="w-5 h-5 mr-1" />
                         Update Ebook
                       </Link>
                     </li>
                     <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
-                      <RiArrowDropRightLine className="w-5 h-5 mr-1" /> CoQa
+                      <BsDot className="w-5 h-5 mr-1" /> CoQa
                     </li>
                     <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
-                      <RiArrowDropRightLine className="w-5 h-5 mr-1" /> Mapping
-                      Dirkom
+                      <BsDot className="w-5 h-5 mr-1" /> Mapping Dirkom
                     </li>
                     <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
-                      <RiArrowDropRightLine className="w-5 h-5 mr-1" /> Audio
-                      Learning
+                      <BsDot className="w-5 h-5 mr-1" /> Audio Learning
                     </li>
                     <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
-                      <RiArrowDropRightLine className="w-5 h-5 mr-1" /> Video
-                      Learning
+                      <BsDot className="w-5 h-5 mr-1" /> Video Learning
                     </li>
                   </ul>
                 </div>

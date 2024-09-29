@@ -8,7 +8,10 @@ export default function SelectInput({
   label,
   id,
   options = [],
+  placeholder,
   required = false,
+  handleChange,
+  disabled = false,
 }) {
   const selectRef = useRef(null);
 
@@ -23,11 +26,6 @@ export default function SelectInput({
     }
     if (!label) {
       throw new Error("The 'label' prop is required in SelectInput component.");
-    }
-    if (!options || options.length === 0) {
-      throw new Error(
-        "The 'options' prop is required in SelectInput component."
-      );
     }
     if (options) {
       if (!Array.isArray(options)) {
@@ -53,15 +51,35 @@ export default function SelectInput({
         <select
           name={id}
           id={id}
-          className="w-full border-2 border-neutral-400 p-2 rounded-lg appearance-none"
+          className="w-full border-2  border-neutral-400 p-2 rounded-lg appearance-none"
           ref={selectRef}
-          onChange={(e) => setStateValue(e.target.value)}
+          onChange={(e) => {
+            if (handleChange) {
+              handleChange(e);
+            } else {
+              setStateValue(e.target.value);
+            }
+          }}
+          disabled={disabled}
         >
-          {options.map((item, index) => (
-            <option key={index} value={item.value}>
-              {item.label}
+          {placeholder && (
+            <option value="" className="text-gray-400" disabled hidden selected>
+              {placeholder || "Select an option"}
             </option>
-          ))}
+          )}
+
+          {options.length === 0 && (
+            <option value="" className="text-gray-400" disabled>
+              No options available
+            </option>
+          )}
+
+          {options.length > 0 &&
+            options.map((item, index) => (
+              <option key={index} value={item.value}>
+                {item.label}
+              </option>
+            ))}
         </select>
 
         <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">

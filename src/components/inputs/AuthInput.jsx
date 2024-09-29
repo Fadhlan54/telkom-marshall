@@ -20,17 +20,9 @@ export default function AuthInput({
   };
   return (
     <div className={`relative ${cClass}`}>
-      <label
-        htmlFor={iId}
-        className={`block text-sm absolute z-10 top-0 left-8 -translate-y-1/2 bg-[#E8E8E8] px-2 font-semibold ${
-          errorMessage ? "text-alert-danger" : "text-[#757575]"
-        }`}
-      >
-        {iLabel}
-      </label>
       <div className="flex relative">
         <span
-          className={`inline-flex items-center ps-3.5   bg-transparent border border-e-0  rounded-s-full ${
+          className={`inline-flex items-center ps-3.5 bg-transparent border border-e-0  rounded-s-full ${
             errorMessage
               ? "text-alert-danger border-alert-danger"
               : "text-gray-900 border-gray-300"
@@ -38,6 +30,14 @@ export default function AuthInput({
         >
           {iIcon}
         </span>
+        <label
+          htmlFor={iId}
+          className={`block text-sm absolute top-0 left-9 -translate-y-1/2 px-1 font-semibold bg-[#E8E8E8] ${
+            errorMessage ? "text-alert-danger" : "text-[#757575]"
+          }`}
+        >
+          {iLabel}
+        </label>
         <input
           type={
             iType === "password" ? (showPassword ? "text" : "password") : iType

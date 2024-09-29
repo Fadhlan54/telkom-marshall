@@ -16,11 +16,11 @@ export default function FormStep({ currentStep, totalSteps }) {
   };
 
   return (
-    <div className="flex flex-col items-end">
-      <p className="text-sm font-medium mb-2">
+    <div className="flex flex-col items-end w-full md:w-fit ">
+      <p className="text-sm font-medium md:mb-2">
         Step {currentStep}/{totalSteps}
       </p>
-      <div className="flex gap-2">{generateSteps()}</div>
+      <div className="hidden md:flex gap-2">{generateSteps()}</div>
     </div>
   );
 }
