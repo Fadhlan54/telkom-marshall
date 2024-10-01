@@ -10,6 +10,7 @@ import {
 } from "@/lib/slices/navbarSlice";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -78,7 +79,7 @@ export default function Navbar() {
             width={200}
             height={73}
             alt="Marshall Logo"
-            className="w-[120px] h-[44px]"
+            className="w-[120px] h-auto"
           />
         </div>
         <div className="relative flex gap-2 items-center">

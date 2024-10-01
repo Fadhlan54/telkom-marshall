@@ -1,7 +1,7 @@
 "use client";
 
 import MainLayout from "@/components/layouts/MainLayout";
-import CreateLayout from "@/components/layouts/CreateLayout";
+import ContentLayout from "@/components/layouts/ContentLayout";
 import { useState } from "react";
 import SelectInput from "@/components/inputs/SelectInput";
 import GenerateModuleForm from "@/components/forms/GenerateModuleForm";
@@ -9,9 +9,9 @@ import GenerateModuleForm from "@/components/forms/GenerateModuleForm";
 export default function ModulePage() {
   return (
     <MainLayout>
-      <CreateLayout>
+      <ContentLayout>
         <GenerateModuleForm />
-      </CreateLayout>
+      </ContentLayout>
     </MainLayout>
   );
 }

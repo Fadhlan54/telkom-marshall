@@ -1,23 +1,26 @@
-import CreateLayout from "@/components/layouts/CreateLayout";
+import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
 import Link from "next/link";
 
 export default function ReviewModulePage() {
   return (
     <MainLayout>
-      <CreateLayout>
+      <ContentLayout>
         <h1 className="text-center font-bold text-xl mb-4">Review Module</h1>
 
-        <div className="flex justify-end text-xs gap-2 mb-2">
-          <Link href={"/"} className="py-1 px-6 bg-neutral-200 rounded-full">
-            Review Baru
+        <div className="flex  sm:justify-end text-xs gap-2 mb-2">
+          <Link
+            href={"/review-module/create"}
+            className="py-1 px-6 bg-neutral-200 rounded-full"
+          >
+            Create Review Module
           </Link>
           <Link href={"/"} className="py-1 px-6 bg-neutral-200 rounded-full">
-            Download Revisi PPT
+            Download Review Module
           </Link>
         </div>
 
-        <div className="overflow-x-auto shadow-md ">
+        <div className="overflow-x-auto shadow-lg ">
           <table className="w-full text-left rtl:text-right text-gray-500 border-separate border-spacing-0 text-xs">
             <thead className=" text-gray-700 uppercase bg-gray-50 text-center">
               <tr className="bg-neutral-200">
@@ -35,13 +38,13 @@ export default function ReviewModulePage() {
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-2 border border-r-0 border-black font-semibold"
+                  className="px-3 py-2 border border-r-0 border-black font-semibold min-w-36"
                 >
                   Clarity
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-2 border border-r-0 border-black font-semibold"
+                  className="px-3 py-2 border border-r-0 border-black font-semibold min-w-[8rem]"
                 >
                   Content
                 </th>
@@ -62,7 +65,10 @@ export default function ReviewModulePage() {
                   EYD oke
                 </td>
                 <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  Kalimat tersebut sudah jelas
+                  Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas
+                  Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas
+                  Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas
+                  Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas
                 </td>
                 <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
                   Konten sudah oke
@@ -108,7 +114,7 @@ export default function ReviewModulePage() {
             </tbody>
           </table>
         </div>
-      </CreateLayout>
+      </ContentLayout>
     </MainLayout>
   );
 }

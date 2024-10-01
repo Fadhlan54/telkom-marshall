@@ -31,7 +31,7 @@ export default function TextAreaInput({
         name={id}
         id={id}
         rows={rows}
-        className="w-full border-2 border-neutral-400 p-2 rounded-lg"
+        className="w-full border-2 border-neutral-400 p-2 rounded-lg min-w-72"
         onChange={(e) => setStateValue(e.target.value)}
         value={stateValue}
       ></textarea>

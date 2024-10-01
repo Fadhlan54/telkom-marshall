@@ -1,7 +1,7 @@
 import BottomNavigation from "../navigations/BottomNavigation";
 import Navbar from "../navigations/Navbar";
 import SideNavigation from "../navigations/SideNavigation";
-import Toast from "../fragments/Toast";
+import Toast from "../common/Toast";
 
 export default function MainLayout({ children }) {
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SelectInput from "../inputs/SelectInput";
-import FormStep from "../fragments/FormStep";
+import FormStep from "../common/FormStep";
 import TextInput from "../inputs/TextInput";
 import TextAreaInput from "../inputs/TextAreaInput";
 import Link from "next/link";
@@ -145,6 +145,7 @@ export default function GenerateModuleForm() {
             stateValue={referenceMethod}
             setStateValue={setReferenceMethod}
             label={"Reference Method"}
+            placeholder={"Select Reference Method"}
             options={[
               { label: "Reference Method 1", value: "1" },
               { label: "Reference Method 2", value: "2" },
@@ -156,6 +157,7 @@ export default function GenerateModuleForm() {
             stateValue={ebookReference}
             setStateValue={setEbookReference}
             label={"Ebook Reference"}
+            placeholder={"Select Ebook Reference"}
             options={[
               { label: "Ebook Reference 1", value: "1" },
               { label: "Ebook Reference 2", value: "2" },

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { RiArrowDownSLine } from "react-icons/ri";
 
-export default function SelectInput({
+export default function SearchableSelectInput({
   stateValue,
   setStateValue,
   label,

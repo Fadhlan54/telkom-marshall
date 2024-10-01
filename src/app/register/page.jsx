@@ -13,6 +13,7 @@ export default function Login() {
           alt="Telkom Marshall Logo"
           width={160}
           height={58.4}
+          priority
         />
         <h2 className="font-bold text-2xl mt-3 mb-4">Let Us Know You</h2>
         <RegisterForm />

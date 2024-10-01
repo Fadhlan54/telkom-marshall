@@ -3,82 +3,15 @@
 import DragNDropInput from "@/components/inputs/DragNDropInput";
 import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
-import Image from "next/image";
 import Link from "next/link";
-import { useState, useRef } from "react";
-import { RiCloseFill, RiInformation2Line } from "react-icons/ri";
+import { useState } from "react";
+import { RiInformation2Line } from "react-icons/ri";
 
 export default function ReviewPage() {
-  const [dbRatio, setDbRatio] = useState(100);
   const [checkboxReview1, setCheckboxReview1] = useState(true);
   const [checkboxReview2, setCheckboxReview2] = useState(true);
-  const [checkboxAutoCrawling, setCheckboxAutoCrawling] = useState(false);
   const [pptFile, setPptFile] = useState(null);
   const [ebookFile, setEbookFile] = useState(null);
-  const [isDraggingPpt, setIsDraggingPpt] = useState(false);
-  const [isDraggingEbook, setIsDraggingEbook] = useState(false);
-  const [testFile, setTestFile] = useState(null);
-
-  const pptInputRef = useRef(null);
-  const ebookInputRef = useRef(null);
-
-  const handleDragOver = (e, type) => {
-    e.preventDefault();
-    if (type === "ppt") {
-      setIsDraggingPpt(true);
-    } else if (type === "ebook") {
-      setIsDraggingEbook(true);
-    }
-  };
-
-  const resetDrag = () => {
-    setIsDraggingPpt(false);
-    setIsDraggingEbook(false);
-  };
-
-  const handleDragLeave = () => {
-    resetDrag();
-  };
-
-  const handleDrop = (e, type) => {
-    e.preventDefault();
-    resetDrag();
-
-    const file = e.dataTransfer.files[0];
-    const fileExt = file.name.split(".")[file.name.split(".").length - 1];
-    if (type === "ppt") {
-      if (fileExt !== "pptx") {
-        setPptFile(null);
-        return;
-      }
-      setPptFile(file);
-    } else if (type === "ebook") {
-      if (fileExt !== "pdf") {
-        setEbookFile(null);
-        return;
-      }
-      setEbookFile(file);
-    }
-  };
-
-  const handleFileChange = (e, type) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    if (type === "ppt") {
-      setPptFile(file);
-    } else {
-      setEbookFile(file);
-    }
-  };
-
-  const handleClick = (e, type) => {
-    e.preventDefault();
-    if (type === "ppt") {
-      pptInputRef.current.click();
-    } else {
-      ebookInputRef.current.click();
-    }
-  };
 
   return (
     <MainLayout>

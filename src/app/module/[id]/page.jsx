@@ -1,4 +1,4 @@
-import CreateLayout from "@/components/layouts/CreateLayout";
+import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { BiLoaderCircle } from "react-icons/bi";
 export default function ModuleDetailsPage() {
   return (
     <MainLayout>
-      <CreateLayout cClass="flex flex-col items-center">
+      <ContentLayout cClass="flex flex-col items-center">
         <Image
           src="/images/marshall logo book.png"
           alt="Marshall Logo"
@@ -29,7 +29,7 @@ export default function ModuleDetailsPage() {
         >
           Generate another
         </Link>
-      </CreateLayout>
+      </ContentLayout>
     </MainLayout>
   );
 }

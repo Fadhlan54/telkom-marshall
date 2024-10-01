@@ -11,6 +11,7 @@ import {
   validatePassword,
   validateUsername,
 } from "@/utils/validation";
+import useBeforeUnload from "@/hooks/useBeforeUnload";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function RegisterForm() {
   const [passwordError, setPasswordError] = useState("");
   const [emptyFieldError, setEmptyFieldError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasChanged, setHasChanged] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -102,8 +104,10 @@ export default function RegisterForm() {
     setPasswordError("");
   };
 
+  useBeforeUnload(hasChanged);
+
   return (
-    <form className="w-full">
+    <form className="w-full" onChange={() => setHasChanged(true)}>
       {emptyFieldError && (
         <p className="text-sm text-red-600 text-center mb-4">
           All fields are required

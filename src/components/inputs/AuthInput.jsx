@@ -49,6 +49,7 @@ export default function AuthInput({
           placeholder={iPlaceholder}
           value={iState}
           onChange={(e) => iSetState(e.target.value)}
+          autoComplete="off"
         />
         {iType === "password" && (
           <div className="absolute right-0 pe-4 top-1/2 -translate-y-1/2  h-full flex items-center">

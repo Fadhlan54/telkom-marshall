@@ -1,5 +1,3 @@
-"use client";
-
 import LoginForm from "@/components/forms/LoginForm";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import Image from "next/image";
@@ -13,6 +11,7 @@ export default function Login() {
           alt="Telkom Marshall Logo"
           width={160}
           height={58.4}
+          priority
         />
         <h2 className="font-bold text-2xl mt-4 mb-6">Welcome Back!</h2>
         <LoginForm />

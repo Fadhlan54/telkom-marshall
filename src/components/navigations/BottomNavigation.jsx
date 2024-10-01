@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   RiBookLine,
@@ -12,6 +13,7 @@ import {
 export default function BottomNavigation() {
   const [visible, setVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,14 +44,18 @@ duration-300 sm:hidden ${visible ? "translate-y-0" : "translate-y-full"}  `}
       >
         <Link
           href={"/"}
-          className="rounded-t-2xl px-4 py-1 bg-neutral-300 text-white flex flex-col items-center"
+          className={`rounded-t-2xl px-4 py-1 flex flex-col items-center ${
+            pathname === "/" && "bg-neutral-300 text-white"
+          }`}
         >
           <RiHomeLine />
           <p className="text-xs mt-0.5">Home</p>
         </Link>
         <Link
-          href={"/"}
-          className="rounded-t-2xl px-4 py-1  flex flex-col items-center"
+          href={"/request-history"}
+          className={`rounded-t-2xl px-3 py-1 flex flex-col items-center ${
+            pathname === "/request-history" && "bg-neutral-300 text-white"
+          }`}
         >
           <RiHistoryFill className="icon" />
           <p className="text-xs mt-0.5 text-center">

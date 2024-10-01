@@ -1,12 +1,12 @@
-import Loading from "@/components/fragments/Loading";
-import CreateLayout from "@/components/layouts/CreateLayout";
+import Loading from "@/components/common/Loading";
+import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
 import Link from "next/link";
 
 export default function EbookById() {
   return (
     <MainLayout>
-      <CreateLayout>
+      <ContentLayout>
         <div className="flex flex-col items-center">
           <h1 className="text-center font-semibold text-xl mb-4">
             Processing your e-book
@@ -22,7 +22,7 @@ export default function EbookById() {
             Upload E-Book baru
           </Link>
         </div>
-      </CreateLayout>
+      </ContentLayout>
     </MainLayout>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { IoMailOutline } from "react-icons/io5";
 import AuthInput from "../inputs/AuthInput";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -5,12 +7,14 @@ import Link from "next/link";
 import { openToast } from "@/lib/slices/toastSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import useBeforeUnload from "@/hooks/useBeforeUnload";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
+  const [hasChanged, setHasChanged] = useState(false);
   const handleLogin = (e) => {
     e.preventDefault();
     if (username === "admin" && password === "admin") {
@@ -34,8 +38,14 @@ export default function LoginForm() {
     }
   };
 
+  useBeforeUnload(hasChanged);
+
+  const handleHasChanged = () => {
+    setHasChanged(true);
+  };
+
   return (
-    <form className="w-full">
+    <form className="w-full" onChange={handleHasChanged}>
       <AuthInput
         iId="username"
         iLabel="Username"

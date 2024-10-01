@@ -14,24 +14,218 @@ import {
 import handleStep from "@/utils/handleStep";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RiCloseFill, RiEditBoxLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { showToastWithTimeout } from "@/lib/slices/toastSlice";
 import Loading from "@/components/common/Loading";
-import useBeforeUnload from "@/hooks/useBeforeUnload";
-
-const totalSteps = 4;
 
 export default function Ebook() {
   const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    ebookFile: null,
+    competences: [],
+    competenceGroup: "",
+    competenceName: [],
+    competenceNameEdit: [],
+    ebookType: "",
+    language: "",
+    ebookTitle: "",
+    publisher: "",
+    author: "",
+    yearPublished: "",
+    isbn: "",
+    doi: "",
+  });
 
-  // form data state
-  const [ebookFile, setEbookFile] = useState(null);
+  const [selectOptions, setSelectOptions] = useState({
+    competencesGroup: [],
+    competencesName: [],
+    competencesNameEdit: [],
+  });
+
+  const [uiState, setUiState] = useState({
+    currentStep: 1,
+    isCreateCompetenceModalVisible: false,
+    isEditCompetenceModalVisible: false,
+    isLoading: false,
+    isFetchingCompetenceName: false,
+    errors: {
+      competenceGroup: false,
+      competenceName: false,
+      competenceNameEdit: false,
+    },
+  });
+
+  const toggleModalVisiblity = (modal, isVisible) => {
+    switch (modal) {
+      case "create":
+        setUiState({
+          ...uiState,
+          isCreateCompetenceModalVisible: isVisible,
+        });
+        break;
+      case "edit":
+        setUiState({
+          ...uiState,
+          isEditCompetenceModalVisible: isVisible,
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleInputChange = (e, field) => {
+    setFormData({
+      ...formData,
+      [field]: e.target.value,
+    });
+  };
+
+  const handleAddCompetence2 = (e) => {
+    if (!formData.competenceGroup || !formData.competenceName.length) {
+      setUiState((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          competenceGroup: !formData.competenceGroup,
+          competenceName: !formData.competenceName.length,
+        },
+      }));
+
+      return;
+    }
+
+    setFormData({
+      ...formData,
+      competences: [
+        ...formData.competences,
+        {
+          group: formData.competenceGroup,
+          names: formData.competenceName,
+        },
+      ],
+      competenceGroup: "",
+      competenceName: [],
+    });
+  };
+
+  const resetCompetences2 = () => {
+    setFormData({
+      ...formData,
+      competenceGroup: "",
+      competenceName: [],
+      competenceNameEdit: [],
+    });
+  };
+
+  const handleCompetenceChange = (actionType) => {
+    const isEditValid =
+      formData.competenceGroup && formData.competenceNameEdit.length;
+    setUiState((prevState) => ({
+      ...prevState,
+      errors: {
+        ...prevState.errors,
+        competenceGroup: !formData.competenceGroup,
+        competenceNameEdit: !formData.competenceNameEdit.length,
+      },
+    }));
+
+    if (!isEditValid) return;
+
+    const updatedCompetences = formData.competences.map((competence) => {
+      if (competence.group === formData.competenceGroup) {
+        return {
+          group: formData.competenceGroup,
+          names: formData.competenceNameEdit,
+        };
+      }
+      return competence;
+    });
+
+    if (actionType === "edit") {
+      setFormData((prevState) => ({
+        ...prevState,
+        competences: updatedCompetences,
+      }));
+    } else if (actionType === "delete") {
+      setFormData((prevState) => ({
+        ...prevState,
+        competences: prevState.competences.filter(
+          (competence) => competence.group !== formData.competenceGroup
+        ),
+      }));
+    }
+  };
+
+  const getCompetenceGroup = useCallback(async () => {
+    try {
+      setUiState((prevState) => ({ ...prevState, isLoading: true }));
+      const response = await fetchCompetencesGroup();
+      setUiState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+        competenceGroupOption: response.data || [],
+      }));
+    } catch (error) {
+      dispatch(
+        showToastWithTimeout({
+          type: "danger",
+          message: error.message,
+          duration: 4000,
+        })
+      );
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    getCompetenceGroup();
+  }, [getCompetenceGroup]);
+
+  useEffect(() => {
+    if (formData.competenceGroup) {
+      setUiState((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          competenceGroup: false,
+        },
+      }));
+    }
+
+    if (formData.competenceNameEdit.length) {
+      setUiState((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          competenceNameEdit: false,
+        },
+      }));
+    }
+
+    if (formData.competenceName.length) {
+      setUiState((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          competenceName: false,
+        },
+      }));
+    }
+  }, [
+    formData.competenceGroup,
+    formData.competenceName,
+    formData.competenceNameEdit,
+  ]);
+
   const [competenceGroup, setCompetenceGroup] = useState("");
   const [competenceName, setCompetenceName] = useState([]);
   const [competenceNameEdit, setCompetenceNameEdit] = useState([]);
   const [competences, setCompetences] = useState([]);
+  const [competenceNameOption, setCompetenceNameOption] = useState([]);
+  const [competenceGroupOption, setCompetenceGroupOption] = useState([]);
+
   const [ebookType, setEbookType] = useState("");
   const [language, setLanguage] = useState("");
   const [ebookTitle, setEbookTitle] = useState("");
@@ -40,44 +234,40 @@ export default function Ebook() {
   const [yearPublished, setYearPublished] = useState("");
   const [isbn, setIsbn] = useState("");
   const [doi, setDoi] = useState("");
-
-  // UI state
-  const [competenceNameOption, setCompetenceNameOption] = useState([]);
-  const [competenceGroupOption, setCompetenceGroupOption] = useState([]);
+  const [ebookFile, setEbookFile] = useState(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [isCreateCompetenceModalVisible, setIsCreateCompetenceModalVisible] =
     useState(false);
   const [isEditCompetenceModalVisible, setIsEditCompetenceModalVisible] =
     useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isFetchingCompetenceName, setIsFetchingCompetenceName] =
-    useState(false);
 
-  // error state
   const [competenceGroupError, setCompetenceGroupError] = useState(false);
   const [competenceNameError, setCompetenceNameError] = useState(false);
   const [competenceNameEditError, setCompetenceNameEditError] = useState(false);
-  const [hasChanged, setHasChanged] = useState(false);
+  const [isFetchingCompetenceName, setIsFetchingCompetenceName] =
+    useState(false);
 
-  // utils
-  const showCreateCompetenceModal = (e) => {
+  const totalSteps = 4;
+
+  function showCreateCompetenceModal(e) {
     e.preventDefault();
     setIsCreateCompetenceModalVisible(true);
-  };
+  }
 
-  const showEditCompetenceModal = (e, competence) => {
+  function showEditCompetenceModal(e, competence) {
     e.preventDefault();
 
     setCompetenceGroup(competence.group);
     setCompetenceNameEdit(competence.names);
     setIsEditCompetenceModalVisible(true);
-  };
+  }
 
-  const hideEditCompetenceModal = (e) => {
+  function hideEditCompetenceModal(e) {
     e.preventDefault();
     resetCompetences();
     setIsEditCompetenceModalVisible(false);
-  };
+  }
 
   const handleChangeCompetenceName = (e, type) => {
     e.preventDefault();
@@ -102,7 +292,6 @@ export default function Ebook() {
 
   const handleAddCompetence = (e) => {
     e.preventDefault();
-    setHasChanged(true);
 
     if (!competenceGroup) {
       setCompetenceGroupError(true);
@@ -215,32 +404,22 @@ export default function Ebook() {
     }
   };
 
-  const handleHasChanged = () => {
-    setHasChanged(true);
+  const getCompetenceNameByGroup = async (group) => {
+    setIsFetchingCompetenceName(true);
+    try {
+      const response = await fetchCompetenceNameByGroup(group);
+
+      setCompetenceNameOption(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsFetchingCompetenceName(false);
+    }
   };
 
-  useBeforeUnload(hasChanged);
-
-  // API CALLS
-  const getCompetenceNameByGroup = useMemo(
-    () => async (group) => {
-      setIsFetchingCompetenceName(true);
-      try {
-        const response = await fetchCompetenceNameByGroup(group);
-
-        setCompetenceNameOption(response.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsFetchingCompetenceName(false);
-      }
-    },
-    []
-  );
-
-  const getCompetencesGroup = useCallback(async () => {
-    setIsLoading(true);
-    try {
+  useEffect(() => {
+    const getCompetencesGroup = async () => {
+      setIsLoading(true);
       const response = await fetchCompetencesGroup();
       if (response.statusCode !== 200) {
         dispatch(
@@ -251,17 +430,11 @@ export default function Ebook() {
           })
         );
       }
-      setCompetenceGroupOption(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
       setIsLoading(false);
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
+      setCompetenceGroupOption(response.data);
+    };
     getCompetencesGroup();
-  }, [getCompetencesGroup]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (competenceGroup) {
@@ -279,10 +452,10 @@ export default function Ebook() {
     <MainLayout>
       {/* Add Competence Modal */}
       {isCreateCompetenceModalVisible && (
-        <Modal setShowModal={setIsCreateCompetenceModalVisible}>
+        <Modal setShowModal={() => toggleModalVisiblity("create", false)}>
           <div className="flex justify-between items-center mb-2">
             <h1 className="font-semibold text-lg">Tambahkan kompetensi baru</h1>
-            <button onClick={() => setIsCreateCompetenceModalVisible(false)}>
+            <button onClick={() => toggleModalVisiblity("create", false)}>
               <RiCloseFill className="h-5 w-5 text-neutral-600 hover:text-alert-danger" />
             </button>
           </div>
@@ -292,8 +465,6 @@ export default function Ebook() {
               <SelectInput
                 label="Competence Group"
                 id="group"
-                stateValue={competenceGroup}
-                setStateValue={setCompetenceGroup}
                 options={
                   competenceGroupOption
                     ? competenceGroupOption.filter(
@@ -324,15 +495,10 @@ export default function Ebook() {
                 options={competenceNameOption.filter(
                   (item) => !competenceName.includes(item.label)
                 )}
-                placeholder={
-                  isFetchingCompetenceName
-                    ? "Loading data..."
-                    : "Tambahkan kompetensi"
-                }
+                placeholder={"Tambahkan kompetensi"}
                 handleChange={(e) => {
                   handleChangeCompetenceName(e, "create");
                 }}
-                disabled={isFetchingCompetenceName}
                 required
               />
               {competenceNameError && (
@@ -416,15 +582,10 @@ export default function Ebook() {
                 options={competenceNameOption.filter(
                   (item) => !competenceNameEdit.includes(item.label)
                 )}
-                placeholder={
-                  isFetchingCompetenceName
-                    ? "Loading data..."
-                    : "Tambahkan kompetensi"
-                }
+                placeholder={"Tambahkan kompetensi"}
                 handleChange={(e) => {
                   handleChangeCompetenceName(e, "edit");
                 }}
-                disabled={isFetchingCompetenceName}
                 required
               />
               {competenceNameEditError && (
@@ -478,11 +639,7 @@ export default function Ebook() {
             Buat modul pelatihan yang didukung teknologi Artificial Intelligence
             sesuai dengan kebutuhan
           </p>
-          <form
-            action=""
-            className="mt-4 space-y-2"
-            onChange={handleHasChanged}
-          >
+          <form action="" className="mt-4 space-y-2">
             <div className="w-full flex justify-end">
               <FormStep currentStep={currentStep} totalSteps={totalSteps} />
             </div>
@@ -574,7 +731,6 @@ export default function Ebook() {
                   label="E-Book Type"
                   id="type"
                   setStateValue={setEbookType}
-                  stateValue={ebookType}
                   options={[
                     { label: "Book", value: "book" },
                     { label: "Journal", value: "journal" },
@@ -586,13 +742,11 @@ export default function Ebook() {
                 <SelectInput
                   label="Language"
                   id="language"
-                  stateValue={language}
                   setStateValue={setLanguage}
                   options={[
                     { label: "Indonesia", value: "id" },
                     { label: "English", value: "en" },
                   ]}
-                  placeholder={"Select E-Book Language"}
                   required
                 />
               </>

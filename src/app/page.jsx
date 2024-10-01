@@ -1,11 +1,9 @@
-import CreateLayout from "@/components/layouts/CreateLayout";
+import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
 import Link from "next/link";
 import { HiSearch } from "react-icons/hi";
-import { PiSealCheckFill } from "react-icons/pi";
 import {
   RiBook3Line,
-  RiBookLine,
   RiFileAddLine,
   RiLoopLeftFill,
   RiTimeFill,
@@ -15,7 +13,7 @@ import {
 export default function Home() {
   return (
     <MainLayout>
-      <CreateLayout>
+      <ContentLayout>
         <div className="flex flex-wrap gap-4 justify-between">
           <div>
             <p className="font-semibold leading-4">Halo, Admin</p>
@@ -23,7 +21,7 @@ export default function Home() {
               Let&apos;s start your project review now!{" "}
             </p>
           </div>
-          <div className="text-neutral-600 text-sm flex w-full sm:max-w-64 h-fit">
+          <div className="text-neutral-600 text-sm hidden sm:flex w-full max-w-72 h-fit ">
             <label
               htmlFor="search-reference"
               className="flex items-center bg-neutral-200 p-2 rounded-s-lg"
@@ -38,7 +36,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="my-4 flex flex-wrap-reverse md:flex-nowrap gap-2 ">
+        <div className="my-4 flex flex-wrap md:flex-nowrap gap-2 ">
           <div className="w-full sm:w-7/12 md:5/12 mb-2 flex flex-col justify-between">
             <div>
               <p className="font-semibold leading-4">Project</p>
@@ -90,6 +88,20 @@ export default function Home() {
             <p className="text-sm mb-2 text-neutral-400">
               Select reference that you need
             </p>
+            <div className="text-neutral-600 text-sm flex sm:hidden mb-2 w-full h-fit ">
+              <label
+                htmlFor="search-reference"
+                className="flex items-center bg-neutral-200 p-2 rounded-s-xl"
+              >
+                <HiSearch className="w-4 h-4" />
+              </label>
+              <input
+                type="text"
+                className="bg-neutral-200 rounded-e-xl outline-none w-full py-2 pe-4 block"
+                id="search-reference"
+                placeholder="Search reference"
+              />
+            </div>
             <div className="flex gap-2 w-full h-48 mb-2">
               <div className="w-1/3 bg-neutral-200 rounded-xl"></div>
               <div className="w-1/3  bg-neutral-200 rounded-xl"></div>
@@ -170,7 +182,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </CreateLayout>
+      </ContentLayout>
     </MainLayout>
   );
 }

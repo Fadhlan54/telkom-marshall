@@ -49,6 +49,7 @@ export default function TextInput({
         className="w-full border-2 border-neutral-400 p-2 rounded-lg"
         onChange={(e) => handleChange(e)}
         value={stateValue}
+        autoComplete="off"
       />
     </div>
   );

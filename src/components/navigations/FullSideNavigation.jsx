@@ -10,6 +10,7 @@ import {
   RiArrowDropRightLine,
   RiSettings3Line,
   RiBook3Line,
+  RiCustomerService2Line,
 } from "react-icons/ri";
 
 import { useSelector } from "react-redux";
@@ -72,7 +73,7 @@ export default function FullSideNavigation() {
                 <ul>
                   <li>
                     <Link
-                      href="/review"
+                      href="/review-module"
                       className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
                     >
                       <BsDot className="w-5 h-5 mr-1" />
@@ -118,11 +119,16 @@ export default function FullSideNavigation() {
               E-library
             </li>
 
-            <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200">
-              <RiHistoryFill className="w-4 h-4" /> View Request History
+            <li>
+              <Link
+                href="/request-history"
+                className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200"
+              >
+                <RiHistoryFill className="w-4 h-4" /> View Request History
+              </Link>
             </li>
             <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200">
-              <RiSettings3Line className="w-4 h-4" />
+              <RiCustomerService2Line className="w-4 h-4" />
               Need Help?
             </li>
           </ul>
