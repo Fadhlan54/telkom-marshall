@@ -19,7 +19,7 @@ import { RiCloseFill, RiEditBoxLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { showToastWithTimeout } from "@/lib/slices/toastSlice";
 import Loading from "@/components/common/Loading";
-import useBeforeUnload from "@/hooks/useBeforeUnload";
+import { setHasChanged } from "@/lib/slices/hasChangedSlice";
 
 const totalSteps = 4;
 
@@ -31,20 +31,23 @@ export default function Ebook() {
   const [competenceGroup, setCompetenceGroup] = useState("");
   const [competenceName, setCompetenceName] = useState([]);
   const [competenceNameEdit, setCompetenceNameEdit] = useState([]);
-  const [competences, setCompetences] = useState([]);
-  const [ebookType, setEbookType] = useState("");
-  const [language, setLanguage] = useState("");
-  const [ebookTitle, setEbookTitle] = useState("");
-  const [publisher, setPublisher] = useState("");
-  const [author, setAuthor] = useState("");
-  const [yearPublished, setYearPublished] = useState("");
-  const [isbn, setIsbn] = useState("");
-  const [doi, setDoi] = useState("");
+
+  const [form, setForm] = useState({
+    competences: [],
+    ebookType: "",
+    language: "",
+    ebookTitle: "",
+    publisher: "",
+    author: "",
+    yearPublished: "",
+    isbn: "",
+    doi: "",
+  });
 
   // UI state
+  const [currentStep, setCurrentStep] = useState(1);
   const [competenceNameOption, setCompetenceNameOption] = useState([]);
   const [competenceGroupOption, setCompetenceGroupOption] = useState([]);
-  const [currentStep, setCurrentStep] = useState(1);
   const [isCreateCompetenceModalVisible, setIsCreateCompetenceModalVisible] =
     useState(false);
   const [isEditCompetenceModalVisible, setIsEditCompetenceModalVisible] =
@@ -57,9 +60,16 @@ export default function Ebook() {
   const [competenceGroupError, setCompetenceGroupError] = useState(false);
   const [competenceNameError, setCompetenceNameError] = useState(false);
   const [competenceNameEditError, setCompetenceNameEditError] = useState(false);
-  const [hasChanged, setHasChanged] = useState(false);
 
   // utils
+  const handleFormChange = (e) => {
+    e.preventDefault();
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const showCreateCompetenceModal = (e) => {
     e.preventDefault();
     setIsCreateCompetenceModalVisible(true);
@@ -69,6 +79,7 @@ export default function Ebook() {
     e.preventDefault();
 
     setCompetenceGroup(competence.group);
+    getCompetenceNameByGroup(competence.group);
     setCompetenceNameEdit(competence.names);
     setIsEditCompetenceModalVisible(true);
   };
@@ -102,7 +113,7 @@ export default function Ebook() {
 
   const handleAddCompetence = (e) => {
     e.preventDefault();
-    setHasChanged(true);
+    dispatch(setHasChanged(true));
 
     if (!competenceGroup) {
       setCompetenceGroupError(true);
@@ -115,10 +126,14 @@ export default function Ebook() {
       return;
     }
 
-    setCompetences([
-      ...competences,
-      { group: competenceGroup, names: competenceName },
-    ]);
+    setForm((prev) => ({
+      ...prev,
+      competences: [
+        ...prev.competences,
+        { group: competenceGroup, names: competenceName },
+      ],
+    }));
+
     resetCompetences();
     setIsCreateCompetenceModalVisible(false);
   };
@@ -141,14 +156,16 @@ export default function Ebook() {
       return;
     }
 
-    setCompetences(
-      competences.map((competence) => {
+    setForm((prev) => ({
+      ...prev,
+      competences: prev.competences.map((competence) => {
         if (competence.group === competenceGroup) {
           return { group: competenceGroup, names: competenceNameEdit };
         }
         return competence;
-      })
-    );
+      }),
+    }));
+
     resetCompetences();
     setIsEditCompetenceModalVisible(false);
   };
@@ -156,9 +173,12 @@ export default function Ebook() {
   const handleDeleteCompetence = (e) => {
     e.preventDefault();
     resetCompetences();
-    setCompetences(
-      competences.filter((competence) => competence.group !== competenceGroup)
-    );
+    setForm((prev) => ({
+      ...prev,
+      competences: prev.competences.filter(
+        (competence) => competence.group !== competenceGroup
+      ),
+    }));
     setIsEditCompetenceModalVisible(false);
   };
 
@@ -175,7 +195,7 @@ export default function Ebook() {
 
   const validateNextStep = () => {
     if (currentStep === 1) {
-      if (!ebookFile || competences.length === 0) {
+      if (!ebookFile || form.competences.length === 0) {
         dispatch(
           showToastWithTimeout({
             type: "danger",
@@ -187,7 +207,7 @@ export default function Ebook() {
       }
       return true;
     } else if (currentStep === 2) {
-      if (!language || !ebookType) {
+      if (!form.language || !form.ebookType) {
         dispatch(
           showToastWithTimeout({
             type: "danger",
@@ -200,7 +220,7 @@ export default function Ebook() {
 
       return true;
     } else if (currentStep === 3) {
-      if (!ebookTitle) {
+      if (!form.ebookTitle) {
         dispatch(
           showToastWithTimeout({
             type: "danger",
@@ -216,10 +236,8 @@ export default function Ebook() {
   };
 
   const handleHasChanged = () => {
-    setHasChanged(true);
+    dispatch(setHasChanged(true));
   };
-
-  useBeforeUnload(hasChanged);
 
   // API CALLS
   const getCompetenceNameByGroup = useMemo(
@@ -292,14 +310,13 @@ export default function Ebook() {
               <SelectInput
                 label="Competence Group"
                 id="group"
-                stateValue={competenceGroup}
-                setStateValue={setCompetenceGroup}
+                value={competenceGroup}
                 options={
                   competenceGroupOption
                     ? competenceGroupOption.filter(
-                        (item) =>
-                          !competences.find(
-                            (competence) => competence.group === item.label
+                        (option) =>
+                          !form.competences.find(
+                            (competence) => competence.group === option.label
                           )
                       )
                     : []
@@ -318,21 +335,21 @@ export default function Ebook() {
             </div>
             <div>
               <SelectInput
-                label="Competence Name"
                 id="name"
-                setStateValue={setCompetenceName}
-                options={competenceNameOption.filter(
-                  (item) => !competenceName.includes(item.label)
-                )}
+                label="Competence Name"
                 placeholder={
                   isFetchingCompetenceName
                     ? "Loading data..."
                     : "Tambahkan kompetensi"
                 }
+                options={competenceNameOption.filter(
+                  (item) => !competenceName.includes(item.label)
+                )}
                 handleChange={(e) => {
                   handleChangeCompetenceName(e, "create");
                 }}
                 disabled={isFetchingCompetenceName}
+                multiSelect
                 required
               />
               {competenceNameError && (
@@ -379,7 +396,6 @@ export default function Ebook() {
       {isEditCompetenceModalVisible && (
         <Modal
           setShowModal={setIsEditCompetenceModalVisible}
-          setCompetences={setCompetences}
           onClose={resetCompetences}
         >
           <div className="flex justify-between items-center mb-2">
@@ -394,7 +410,7 @@ export default function Ebook() {
               <SelectInput
                 label="Competence Group"
                 id="group"
-                setStateValue={setCompetenceGroup}
+                value={competenceGroup}
                 options={[{ label: competenceGroup, value: competenceGroup }]}
                 handleChange={(e) => {
                   handleChangeCompetenceGroup(e);
@@ -410,21 +426,21 @@ export default function Ebook() {
             </div>
             <div>
               <SelectInput
+                id="competenceNameEdit"
                 label="Competence Name"
-                id="name"
-                setStateValue={setCompetenceNameEdit}
-                options={competenceNameOption.filter(
-                  (item) => !competenceNameEdit.includes(item.label)
-                )}
                 placeholder={
                   isFetchingCompetenceName
                     ? "Loading data..."
                     : "Tambahkan kompetensi"
                 }
+                options={competenceNameOption.filter(
+                  (item) => !competenceNameEdit.includes(item.label)
+                )}
                 handleChange={(e) => {
                   handleChangeCompetenceName(e, "edit");
                 }}
                 disabled={isFetchingCompetenceName}
+                multiSelect
                 required
               />
               {competenceNameEditError && (
@@ -500,8 +516,8 @@ export default function Ebook() {
                   Kompetensi <span className="text-alert-danger">*</span>
                 </p>
                 <div className="p-2 border-2 border-neutral-400 rounded">
-                  {!competences ||
-                    (competences.length === 0 && (
+                  {!form.competences ||
+                    (form.competences.length === 0 && (
                       <div className="flex flex-col items-center text-center text-neutral-400">
                         <p>Belum ada kompetensi</p>
                         <Image
@@ -520,8 +536,8 @@ export default function Ebook() {
                       </div>
                     ))}
 
-                  {competences.length > 0 &&
-                    competences.map((item, index) => (
+                  {form.competences.length > 0 &&
+                    form.competences.map((item, index) => (
                       <div
                         key={index}
                         className="flex justify-between items-start p-2 border-2 border-neutral-400 rounded text-sm mb-2"
@@ -557,7 +573,7 @@ export default function Ebook() {
                         </button>
                       </div>
                     ))}
-                  {competences.length > 0 && (
+                  {form.competences.length > 0 && (
                     <button
                       className="text-blue-600 text-sm"
                       onClick={(e) => showCreateCompetenceModal(e)}
@@ -572,9 +588,9 @@ export default function Ebook() {
               <>
                 <SelectInput
                   label="E-Book Type"
-                  id="type"
-                  setStateValue={setEbookType}
-                  stateValue={ebookType}
+                  id="ebookType"
+                  handleChange={handleFormChange}
+                  value={form.ebookType}
                   options={[
                     { label: "Book", value: "book" },
                     { label: "Journal", value: "journal" },
@@ -586,8 +602,8 @@ export default function Ebook() {
                 <SelectInput
                   label="Language"
                   id="language"
-                  stateValue={language}
-                  setStateValue={setLanguage}
+                  value={form.language}
+                  handleChange={handleFormChange}
                   options={[
                     { label: "Indonesia", value: "id" },
                     { label: "English", value: "en" },
@@ -602,22 +618,22 @@ export default function Ebook() {
               <>
                 <TextInput
                   label="E-Book Title"
-                  id="title"
-                  setStateValue={setEbookTitle}
-                  stateValue={ebookTitle}
+                  id="ebookTitle"
+                  handleChange={handleFormChange}
+                  value={form.ebookTitle}
                   required
                 />
                 <TextInput
                   label="Publisher"
                   id="publisher"
-                  stateValue={publisher}
-                  setStateValue={setPublisher}
+                  value={form.publisher}
+                  handleChange={handleFormChange}
                 />
                 <TextInput
                   label="Author"
                   id="author"
-                  stateValue={author}
-                  setStateValue={setAuthor}
+                  value={form.author}
+                  handleChange={handleFormChange}
                 />
               </>
             )}
@@ -626,14 +642,24 @@ export default function Ebook() {
               <>
                 <TextInput
                   label={"Year"}
-                  id="year"
-                  stateValue={yearPublished}
-                  setStateValue={setYearPublished}
+                  id="yearPublished"
+                  value={form.yearPublished}
+                  handleChange={handleFormChange}
                   onlyNumber
                   maxLength={4}
                 />
-                <TextInput label="ISBN" id="isbn" setStateValue={setIsbn} />
-                <TextInput label="DOI" id="doi" setStateValue={setDoi} />
+                <TextInput
+                  label="ISBN"
+                  id="isbn"
+                  handleChange={handleFormChange}
+                  value={form.isbn}
+                />
+                <TextInput
+                  label="DOI"
+                  id="doi"
+                  handleChange={handleFormChange}
+                  value={form.doi}
+                />
               </>
             )}
 
