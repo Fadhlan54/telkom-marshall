@@ -1,6 +1,10 @@
+"use client";
+
 import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
+import Modal from "@/components/modals/Modal";
 import Link from "next/link";
+import { useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import {
   RiBook3Line,
@@ -11,8 +15,11 @@ import {
 } from "react-icons/ri";
 
 export default function Home() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <MainLayout>
+      {showModal && <Modal setShowModal={setShowModal} />}
       <ContentLayout>
         <div className="flex flex-wrap gap-4 justify-between">
           <div>
@@ -83,11 +90,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full sm:w-10/12 md:w-7/12 ">
-            <p className="font-semibold leading-4">Reference</p>
-            <p className="text-sm mb-2 text-neutral-400">
-              Select reference that you need
-            </p>
+          <div className="w-full sm:w-10/12 md:w-7/12 flex flex-col justify-between">
+            <div>
+              <p className="font-semibold leading-4">Reference</p>
+              <p className="text-sm mb-2 text-neutral-400">
+                Select reference that you need
+              </p>
+            </div>
+
             <div className="text-neutral-600 text-sm flex sm:hidden mb-2 w-full h-fit ">
               <label
                 htmlFor="search-reference"

@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 
 export default function TextAreaInput({
-  stateValue,
-  setStateValue,
+  value,
+  handleChange,
   label,
   id,
   rows = 3,
   required,
 }) {
   useEffect(() => {
-    if (!setStateValue && setStateValue !== "") {
+    if (!handleChange) {
       throw new Error(
-        "The 'setStateValue' prop is required in InputText component."
+        "The 'handleChange' prop is required in InputText component."
       );
     }
     if (!id) {
@@ -20,7 +20,7 @@ export default function TextAreaInput({
     if (!label) {
       throw new Error("The 'label' prop is required in InputText component.");
     }
-  }, [setStateValue, id, label]);
+  }, [id, label, handleChange]);
 
   return (
     <div className="flex flex-col gap-1 text-sm">
@@ -32,8 +32,8 @@ export default function TextAreaInput({
         id={id}
         rows={rows}
         className="w-full border-2 border-neutral-400 p-2 rounded-lg min-w-72"
-        onChange={(e) => setStateValue(e.target.value)}
-        value={stateValue}
+        onChange={(e) => handleChange(e)}
+        value={value}
       ></textarea>
     </div>
   );

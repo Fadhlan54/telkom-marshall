@@ -1,21 +1,18 @@
 "use client";
 
+import Filter from "@/components/common/Filter";
+import Loading from "@/components/common/Loading";
+import PaginationButtons from "@/components/common/PaginationButtons";
+import PaginationDetails from "@/components/common/PaginationDetails";
 import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
+import { fetchRequestHistory } from "@/service/requestHistory";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import {
-  RiArrowDownSLine,
-  RiArrowUpSLine,
-  RiFilter2Fill,
-  RiFilter2Line,
-  RiSearchLine,
-} from "react-icons/ri";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { RiArrowDownSLine, RiSearchLine } from "react-icons/ri";
 
-export default function RequestHistory() {
-  const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const filterRef = useRef();
-  const buttonFilterRef = useRef();
+function RequestHistory() {
   const [filter, setFilter] = useState({
     user: "",
     status: "",
@@ -24,10 +21,13 @@ export default function RequestHistory() {
     dateTo: "",
   });
 
-  const toggleFilter = (e) => {
-    e.preventDefault();
-    setIsFilterVisible(!isFilterVisible);
-  };
+  const [data, setData] = useState([]);
+  const [totalData, setTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const searchParams = useSearchParams();
+  const page = parseInt(searchParams.get("page")) || 1;
+  const limit = parseInt(searchParams.get("limit")) || 10;
 
   const handleFilterChange = (e, type) => {
     e.preventDefault();
@@ -47,67 +47,57 @@ export default function RequestHistory() {
 
   const applyFilter = (e) => {
     e.preventDefault();
-    setIsFilterVisible(false);
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        filterRef.current &&
-        !filterRef.current.contains(event.target) &&
-        buttonFilterRef.current &&
-        !buttonFilterRef.current.contains(event.target)
-      ) {
-        setIsFilterVisible(false);
+    const getRequestHistory = async () => {
+      const res = await fetchRequestHistory(1, 10);
+      console.log(res);
+    };
+
+    getRequestHistory();
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const getRequestHistory = async () => {
+      try {
+        const res = await fetchRequestHistory(page, limit);
+        setData(res.result.data);
+        setTotal(res.result.total);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoading(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  });
+
+    getRequestHistory();
+  }, [page, limit]);
 
   return (
     <MainLayout>
       <ContentLayout>
-        <h1 className="text-center font-semibold text-xl mb-4">
-          Request History
-        </h1>
-        <div className="flex mb-3 text-xs text-neutral-500">
-          <label
-            htmlFor="search-details"
-            className="flex items-center p-2 ps-3 border border-r-0 rounded-l-md border-neutral-400"
-          >
-            <RiSearchLine className="w-4 h-4" />
-          </label>
-          <input
-            id="search-details"
-            type="text"
-            className="py-1 pe-3 border border-neutral-400 focus:outline-none rounded-r-md border-l-0 w-full max-w-56"
-            placeholder="Search details..."
-          />
-
-          <div className="relative w-fit ml-2">
-            <button
-              className={`border border-neutral-400 px-2 rounded-md flex items-center h-full ${
-                isFilterVisible ? "outline outline-3 outline-blue-500" : ""
-              }`}
-              onClick={(e) => toggleFilter(e)}
-              ref={buttonFilterRef}
-            >
-              <RiFilter2Fill className="w-4 h-4" />
-              <p className="font-medium ml-1 mr-2 ">Filter</p>
-              {isFilterVisible ? (
-                <RiArrowUpSLine className="w-4 h-4" />
-              ) : (
-                <RiArrowDownSLine className="w-4 h-4" />
-              )}
-            </button>
-            {isFilterVisible && (
-              <div
-                className="border border-neutral-400 px-3 py-3 rounded-md bg-white shadow-bottom-xl absolute -bottom-1 translate-y-full right-0 md:right-1/2 md:translate-x-1/2  w-fit z-10"
-                ref={filterRef}
+        {data.length === 0 && <Loading />}
+        {data.length > 0 && (
+          <div>
+            <h1 className="text-center font-semibold text-xl mb-4">
+              Request History
+            </h1>
+            <div className="flex mb-3 text-xs text-neutral-500">
+              <label
+                htmlFor="search-details"
+                className="flex items-center p-2 ps-3 border border-r-0 rounded-l-md border-neutral-400"
               >
+                <RiSearchLine className="w-4 h-4" />
+              </label>
+              <input
+                id="search-details"
+                type="text"
+                className="py-1 pe-3 border border-neutral-400 focus:outline-none rounded-r-md border-l-0 w-full max-w-56"
+                placeholder="Search details..."
+              />
+              <Filter>
                 <label htmlFor="search-user">User</label>
                 <input
                   type="text"
@@ -205,133 +195,123 @@ export default function RequestHistory() {
                     Apply
                   </button>
                 </div>
-              </div>
-            )}
+              </Filter>
+            </div>
+            <PaginationDetails
+              limit={limit}
+              page={page}
+              totalData={totalData}
+            />
+            <div className="overflow-x-auto mb-2">
+              <table className="w-full text-left rtl:text-right text-gray-500 border-separate border-spacing-0 text-xs">
+                <thead className=" text-gray-700 uppercase bg-gray-50 text-center">
+                  <tr className="bg-neutral-200">
+                    <th
+                      scope="col"
+                      className="px-3 py-2 border border-r-0 border-black rounded-tl-lg font-semibold w-10 whitespace-nowrap"
+                    >
+                      No
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap"
+                    >
+                      Request Date
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap"
+                    >
+                      Type
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap min-w-40"
+                    >
+                      Details
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap"
+                    >
+                      Status
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap"
+                    >
+                      User
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-2 text-center border border-black rounded-tr-lg w-[5.5rem] font-semibold whitespace-nowrap"
+                    >
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="[&>*:nth-child(even)]:bg-neutral-200">
+                  {data.map((item, index) => (
+                    <tr key={index}>
+                      <td
+                        className={`px-3 py-2 border border-t-0 border-r-0 border-black ${
+                          data.length === index + 1 && "rounded-bl-lg"
+                        }`}
+                      >
+                        {item.no}
+                      </td>
+                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
+                        {new Date(item.date).toLocaleString("in-ID", {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "short",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          hour12: false,
+                        })}
+                      </td>
+                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
+                        {item.type}
+                      </td>
+                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black max-w-64 ">
+                        {item.details.length > 80 ? (
+                          <>{item.details.slice(0, 80)}...</>
+                        ) : (
+                          <>{item.details}</>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
+                        {item.status}
+                      </td>
+                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
+                        {item.user}
+                      </td>
+                      <td
+                        className={`px-3 py-2 text-center border border-t-0 border-black text-medium text-blue-600 ${
+                          data.length === index + 1 && "rounded-br-lg"
+                        }`}
+                      >
+                        <Link href="/request-history/view/1">View</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <PaginationButtons totalData={totalData} />
           </div>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left rtl:text-right text-gray-500 border-separate border-spacing-0 text-xs">
-            <thead className=" text-gray-700 uppercase bg-gray-50 text-center">
-              <tr className="bg-neutral-200">
-                <th
-                  scope="col"
-                  className="px-3 py-2 border border-r-0 border-black rounded-tl-lg font-semibold w-10 whitespace-nowrap"
-                >
-                  No
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-2 border border-r-0 border-black font-semibold"
-                >
-                  Request Date
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-2 border border-r-0 border-black font-semibold"
-                >
-                  Type
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-2 border border-r-0 border-black font-semibold"
-                >
-                  Details
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-2 border border-r-0 border-black font-semibold"
-                >
-                  Status
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-2 border border-r-0 border-black font-semibold"
-                >
-                  User
-                </th>
-                <th
-                  scope="col"
-                  className="px-3 py-2 text-center border border-black rounded-tr-lg w-28 font-semibold"
-                >
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="[&>*:nth-child(even)]:bg-neutral-200">
-              <tr>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
-                  1
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  2022-01-03
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  Generate Module
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black max-w-64">
-                  [TC-105 Natural Language Processing]_Advancing Natural
-                  Language Processing
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  Processing
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  John Doe
-                </td>
-                <td className="px-3 py-2 text-center border border-t-0 border-black text-blue-600 font-semibold">
-                  <Link href="/request-history/view/1">View</Link>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
-                  2
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  2022-01-02
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  Mapping Module
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words max-w-64">
-                  How To Use Consultative Selling For Revenue Growth
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  done
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  John Doe
-                </td>
-                <td className="px-3 py-2 text-center border border-t-0 border-black text-blue-600 font-semibold">
-                  <Link href="/request-history/view/1">View</Link>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black rounded-bl-lg">
-                  3
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  2022-01-01
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  Ebook to Audio
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words max-w-64">
-                  How To Use Consultative Selling For Revenue Growth
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  cancelled
-                </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  John Doe
-                </td>
-                <td className="px-3 py-2 text-center border border-t-0 border-black rounded-br-lg text-blue-600 font-semibold">
-                  <Link href="/request-history/view/1">View</Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        )}
       </ContentLayout>
     </MainLayout>
+  );
+}
+
+export default function RequestHistoryPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <RequestHistory />
+    </Suspense>
   );
 }

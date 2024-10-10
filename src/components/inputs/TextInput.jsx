@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
 export default function TextInput({
-  stateValue,
-  setStateValue,
+  value,
+  handleChange,
   label,
   id,
   onlyNumber = false,
@@ -10,9 +10,9 @@ export default function TextInput({
   required,
 }) {
   useEffect(() => {
-    if (!setStateValue && setStateValue !== "") {
+    if (!handleChange) {
       throw new Error(
-        "The 'setStateValue' prop is required in InputText component."
+        "The 'handleChange' prop is required in InputText component."
       );
     }
     if (!id) {
@@ -21,21 +21,7 @@ export default function TextInput({
     if (!label) {
       throw new Error("The 'label' prop is required in InputText component.");
     }
-  }, [setStateValue, id, label]);
-
-  const handleChange = (e) => {
-    const { value } = e.target;
-
-    if (maxLength && value.length > maxLength) {
-      return;
-    }
-
-    if (onlyNumber && !/^\d+$/.test(value) && value !== "") {
-      return;
-    }
-
-    setStateValue(value);
-  };
+  }, [id, label, handleChange]);
 
   return (
     <div className="flex flex-col gap-1 text-sm">
@@ -47,9 +33,15 @@ export default function TextInput({
         name={id}
         id={id}
         className="w-full border-2 border-neutral-400 p-2 rounded-lg"
-        onChange={(e) => handleChange(e)}
-        value={stateValue}
+        onChange={(e) => {
+          if (onlyNumber) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, "");
+          }
+          handleChange(e);
+        }}
+        value={value}
         autoComplete="off"
+        maxLength={maxLength || null}
       />
     </div>
   );

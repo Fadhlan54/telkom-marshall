@@ -6,8 +6,6 @@ import { useState } from "react";
 import GenerateModuleForm from "@/components/forms/GenerateModuleForm";
 import FeedbackModuleForm from "@/components/forms/FeedbackModuleForm";
 
-const totalSteps = 4;
-
 export default function ModulePage() {
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -50,7 +48,8 @@ export default function ModulePage() {
               2
             </div>
             <p className="text-center text-xs sm:text-[0.8rem] font-medium absolute -bottom-1 translate-y-full">
-              Feedback
+              Title <br />
+              Adjustment
             </p>
           </div>
           <div
@@ -72,29 +71,8 @@ export default function ModulePage() {
               3
             </div>
             <p className="text-center text-xs sm:text-[0.8rem] font-medium absolute -bottom-1 translate-y-full">
-              Content
-            </p>
-          </div>
-          <div
-            className={`flex-grow mx-4 border-2 ${
-              currentStep > 3 ? "border-blue-500" : "border-neutral-400"
-            }`}
-          />
-
-          <div className="flex flex-col items-center gap-1 relative">
-            <div
-              className={`w-8 h-8 sm:w-10 sm:h-10  rounded-full flex items-center justify-center border  font-medium ${
-                currentStep === 4
-                  ? "bg-neutral-400 border-neutral-800"
-                  : currentStep > 4
-                  ? "bg-blue-500 text-white border-blue-800"
-                  : "bg-neutral-200 border-neutral-400"
-              }`}
-            >
-              4
-            </div>
-            <p className="text-center text-xs sm:text-[0.8rem] font-medium absolute -bottom-1 translate-y-full">
-              Done
+              Content <br />
+              Adjustment
             </p>
           </div>
         </div>

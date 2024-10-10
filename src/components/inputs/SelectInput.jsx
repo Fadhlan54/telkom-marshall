@@ -4,69 +4,43 @@ import { useEffect, useRef } from "react";
 import { RiArrowDownSLine } from "react-icons/ri";
 
 export default function SelectInput({
-  stateValue,
-  setStateValue,
+  value,
   label,
   id,
   options = [],
   placeholder,
   required = false,
+  setValue,
   handleChange,
   disabled = false,
 }) {
   const selectRef = useRef(null);
 
-  useEffect(() => {
-    if (!setStateValue) {
-      throw new Error(
-        "The 'setStateValue' prop is required in SelectInput component."
-      );
+  const handleSelectChange = (e) => {
+    if (handleChange) {
+      handleChange(e);
+    } else if (setValue) {
+      setValue(e.target.value);
     }
-    if (!id) {
-      throw new Error("The 'id' prop is required in SelectInput component.");
-    }
-    if (!label) {
-      throw new Error("The 'label' prop is required in SelectInput component.");
-    }
-    if (options) {
-      if (!Array.isArray(options)) {
-        throw new Error(
-          "The 'options' prop must be an array in SelectInput component."
-        );
-      }
-      options.forEach((option) => {
-        if (!option.label || !option.value) {
-          throw new Error(
-            "The 'options' prop must be an array of objects with 'label' and 'value' properties in SelectInput component."
-          );
-        }
-      });
-    }
-  }, [setStateValue, id, label, options]);
+  };
   return (
     <div className="flex flex-col gap-1 text-sm">
       <label htmlFor={id} className="font-semibold">
         {label} {required && <span className="text-alert-danger">*</span>}
       </label>
       <div className="relative">
-        {/* TODO: make placeholder color to gray */}
         <select
           name={id}
           id={id}
           className={`w-full border-2  border-neutral-400 p-2 rounded-lg appearance-none ${
-            !stateValue && placeholder ? "text-neutral-400 " : "text-black"
+            !value && placeholder ? "text-neutral-400 " : "text-black"
           }`}
           ref={selectRef}
           onChange={(e) => {
-            if (handleChange) {
-              handleChange(e);
-            } else {
-              setStateValue(e.target.value);
-            }
+            handleSelectChange(e);
           }}
-          value={stateValue}
+          value={value}
           disabled={disabled}
-          defaultValue={""}
         >
           {placeholder && (
             <option value="" className="text-gray-400" disabled hidden>

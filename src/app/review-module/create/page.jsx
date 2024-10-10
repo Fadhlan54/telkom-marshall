@@ -3,9 +3,10 @@
 import DragNDropInput from "@/components/inputs/DragNDropInput";
 import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
+import { setHasChanged } from "@/lib/slices/hasChangedSlice";
 import Link from "next/link";
 import { useState } from "react";
-import { RiInformation2Line } from "react-icons/ri";
+import { useDispatch } from "react-redux";
 
 export default function ReviewPage() {
   const [checkboxReview1, setCheckboxReview1] = useState(true);
@@ -13,11 +14,17 @@ export default function ReviewPage() {
   const [pptFile, setPptFile] = useState(null);
   const [ebookFile, setEbookFile] = useState(null);
 
+  const dispatch = useDispatch();
+
+  const handleHasChanged = () => {
+    dispatch(setHasChanged(true));
+  };
+
   return (
     <MainLayout>
       <ContentLayout>
         <h1 className="text-xl text-center font-semibold mb-4">Review Modul</h1>
-        <form action="">
+        <form action="" onChange={handleHasChanged}>
           <h3 className="font-semibold  mt-4 mb-1">Option Review</h3>
 
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 md:gap-12 lg:gap-20">
@@ -33,7 +40,6 @@ export default function ReviewPage() {
                     onChange={(e) => setCheckboxReview1(e.target.checked)}
                   />
                   <label htmlFor="review-1">Review 1</label>
-                  <RiInformation2Line />
                 </div>
                 <div className="flex items-center gap-1 mb-1">
                   <input
@@ -45,34 +51,8 @@ export default function ReviewPage() {
                   />
                   <label htmlFor="review-2">Review 2</label>
                 </div>
-                {/* <div className="flex items-center gap-1 mb-1">
-                  <input
-                    type="checkbox"
-                    name="auto-crawling"
-                    id="auto-crawling"
-                    checked={checkboxAutoCrawling}
-                    onChange={(e) => setCheckboxAutoCrawling(e.target.checked)}
-                  />
-                  <label htmlFor="auto-crawling">Auto Crawling</label>
-                </div> */}
               </div>
             </div>
-            {/* <div>
-              <label htmlFor="ratio" className="block text-sm">
-                Ratio Database
-              </label>
-              <input
-                type="range"
-                name="ratio"
-                id="ratio"
-                min={0}
-                max={100}
-                value={dbRatio}
-                className="w-44 block"
-                onChange={(e) => setDbRatio(e.target.value)}
-              />
-              <p className="text-xs">Ratio: {dbRatio}%</p>
-            </div> */}
           </div>
 
           <div className="flex flex-wrap md:flex-nowrap gap-8 mt-4">
@@ -100,7 +80,7 @@ export default function ReviewPage() {
 
           <div className="flex justify-end">
             <Link
-              href="review/1"
+              href="/review-module/view/1"
               className="inline-block px-6 py-2 bg-[#E8E8E8] rounded-lg mt-2"
             >
               Review

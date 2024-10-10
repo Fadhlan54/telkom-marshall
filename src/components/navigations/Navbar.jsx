@@ -8,13 +8,15 @@ import {
   toggleFullSideNav,
   toggleOffCanvasSideNav,
 } from "@/lib/slices/navbarSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { selectHasChanged } from "@/lib/slices/hasChangedSlice";
+import useBeforeUnload from "@/hooks/useBeforeUnload";
 
 export default function Navbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const dispatch = useDispatch();
+  const hasChanged = useSelector(selectHasChanged);
 
   const profileRef = useRef(null);
 
@@ -38,6 +40,8 @@ export default function Navbar() {
       setShowProfileMenu(false);
     }
   };
+
+  useBeforeUnload(hasChanged);
 
   useEffect(() => {
     if (showProfileMenu) {
@@ -72,7 +76,8 @@ export default function Navbar() {
             width={100}
             height={56.3}
             alt="Indonesia Telecommunication & Digital Research Institute (ITDRI) Logo"
-            className="hidden md:block"
+            className="hidden md:block w-auto h-auto"
+            priority
           />
           <Image
             src={"/images/logo.png"}

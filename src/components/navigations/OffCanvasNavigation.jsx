@@ -7,8 +7,6 @@ import {
   RiArrowDownSLine,
   RiHomeLine,
   RiArrowUpSLine,
-  RiArrowDropRightLine,
-  RiSettings3Line,
   RiBook3Line,
   RiCustomerService2Line,
 } from "react-icons/ri";
@@ -17,7 +15,7 @@ import {
   toggleOffCanvasSideNav,
 } from "@/lib/slices/navbarSlice";
 import { useSelector, useDispatch } from "react-redux";
-import Link from "next/link";
+import CustomLink from "../common/CustomLink";
 import { BsDot } from "react-icons/bs";
 
 export default function OffCanvasNavigation() {
@@ -61,7 +59,7 @@ export default function OffCanvasNavigation() {
       {isOffCanvasVisible && (
         <div className="fixed top-[4rem] left-0 z-30 lg:hidden w-full h-full bg-black bg-opacity-30 lg:bg-transparent max-h-screen overflow-y-hidden">
           <div
-            ref={sideNavRef} // Attach ref to the side nav
+            ref={sideNavRef}
             className="w-64 min-h-screen h-[100%] border-r border-neutral-400 px-4 py-4 bg-white"
           >
             <div className="px-2">
@@ -69,12 +67,12 @@ export default function OffCanvasNavigation() {
             </div>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
-                <Link
+                <CustomLink
                   href="/"
-                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200"
+                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200 w-full"
                 >
                   <RiHomeLine className="w-4 h-4" /> Home
-                </Link>
+                </CustomLink>
               </li>
               <li>
                 <button
@@ -98,31 +96,31 @@ export default function OffCanvasNavigation() {
                 >
                   <ul>
                     <li>
-                      <Link
+                      <CustomLink
                         href="/review-module"
-                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
+                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200 w-full"
                       >
                         <BsDot className="w-5 h-5 mr-1" />
                         Review Module
-                      </Link>
+                      </CustomLink>
                     </li>
                     <li>
-                      <Link
+                      <CustomLink
                         href="/module"
-                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
+                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200 w-full"
                       >
                         <BsDot className="w-5 h-5 mr-1" />
                         Generate Module
-                      </Link>
+                      </CustomLink>
                     </li>
                     <li>
-                      <Link
+                      <CustomLink
                         href="/e-book"
-                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
+                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200 w-full"
                       >
                         <BsDot className="w-5 h-5 mr-1" />
                         Update Ebook
-                      </Link>
+                      </CustomLink>
                     </li>
                     <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
                       <BsDot className="w-5 h-5 mr-1" /> CoQa
@@ -140,20 +138,25 @@ export default function OffCanvasNavigation() {
                 </div>
               </li>
 
-              <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200">
-                <RiBook3Line className="w-4 h-4" />
-                E-library
+              <li>
+                <CustomLink
+                  href={"/e-library"}
+                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200 w-full"
+                >
+                  <RiBook3Line className="w-4 h-4" />
+                  E-library
+                </CustomLink>
               </li>
 
               <li>
-                <Link
+                <CustomLink
                   href={"/request-history"}
-                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200"
+                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200 w-full"
                 >
                   <RiHistoryFill className="w-4 h-4" /> View Request History
-                </Link>
+                </CustomLink>
               </li>
-              <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200">
+              <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200 w-full">
                 <RiCustomerService2Line className="w-4 h-4" />
                 Need Help?
               </li>

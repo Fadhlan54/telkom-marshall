@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { showToastWithTimeout } from "@/lib/slices/toastSlice";
 import Loading from "@/components/common/Loading";
 import { setHasChanged } from "@/lib/slices/hasChangedSlice";
+import MultiSelectInput from "@/components/inputs/MultiSelectInput";
 
 const totalSteps = 4;
 
@@ -27,11 +28,6 @@ export default function Ebook() {
   const dispatch = useDispatch();
 
   // form data state
-  const [ebookFile, setEbookFile] = useState(null);
-  const [competenceGroup, setCompetenceGroup] = useState("");
-  const [competenceName, setCompetenceName] = useState([]);
-  const [competenceNameEdit, setCompetenceNameEdit] = useState([]);
-
   const [form, setForm] = useState({
     competences: [],
     ebookType: "",
@@ -43,6 +39,10 @@ export default function Ebook() {
     isbn: "",
     doi: "",
   });
+  const [ebookFile, setEbookFile] = useState(null);
+  const [competenceGroup, setCompetenceGroup] = useState("");
+  const [competenceName, setCompetenceName] = useState([]);
+  const [competenceNameEdit, setCompetenceNameEdit] = useState([]);
 
   // UI state
   const [currentStep, setCurrentStep] = useState(1);
@@ -104,7 +104,6 @@ export default function Ebook() {
   };
 
   const handleChangeCompetenceGroup = (e) => {
-    e.preventDefault();
     setCompetenceName([]);
 
     getCompetenceNameByGroup(e.target.value);
@@ -322,9 +321,7 @@ export default function Ebook() {
                     : []
                 }
                 placeholder={"Pilih kelompok kompetensi"}
-                handleChange={(e) => {
-                  handleChangeCompetenceGroup(e);
-                }}
+                handleChange={handleChangeCompetenceGroup}
                 required
               />
               {competenceGroupError && (
@@ -334,7 +331,7 @@ export default function Ebook() {
               )}
             </div>
             <div>
-              <SelectInput
+              <MultiSelectInput
                 id="name"
                 label="Competence Name"
                 placeholder={
@@ -345,11 +342,9 @@ export default function Ebook() {
                 options={competenceNameOption.filter(
                   (item) => !competenceName.includes(item.label)
                 )}
-                handleChange={(e) => {
-                  handleChangeCompetenceName(e, "create");
-                }}
+                value={competenceName}
+                setValue={setCompetenceName}
                 disabled={isFetchingCompetenceName}
-                multiSelect
                 required
               />
               {competenceNameError && (
@@ -425,7 +420,7 @@ export default function Ebook() {
               )}
             </div>
             <div>
-              <SelectInput
+              <MultiSelectInput
                 id="competenceNameEdit"
                 label="Competence Name"
                 placeholder={
@@ -436,11 +431,9 @@ export default function Ebook() {
                 options={competenceNameOption.filter(
                   (item) => !competenceNameEdit.includes(item.label)
                 )}
-                handleChange={(e) => {
-                  handleChangeCompetenceName(e, "edit");
-                }}
+                value={competenceNameEdit}
+                setValue={setCompetenceNameEdit}
                 disabled={isFetchingCompetenceName}
-                multiSelect
                 required
               />
               {competenceNameEditError && (
@@ -523,8 +516,8 @@ export default function Ebook() {
                         <Image
                           src={"/gifs/empty_animation.gif"}
                           alt=""
-                          width={200}
-                          height={200}
+                          width={180}
+                          height={180}
                           unoptimized
                         />
                         <button

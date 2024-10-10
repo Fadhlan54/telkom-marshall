@@ -31,7 +31,6 @@ module.exports = {
           "100%": { transform: "rotate(360deg)" },
         },
       },
-
       boxShadow: {
         top: "0 -1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
         "top-md":
@@ -41,7 +40,7 @@ module.exports = {
         "top-xl":
           "0 -20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
         "bottom-xl":
-          "0 20px 25px 5px rgba(0, 0, 0, 0.18), 0 10px 10px -5px rgba(0, 0, 0, 0.08)",
+          "5px 10px 15px 5px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.08)",
       },
     },
   },

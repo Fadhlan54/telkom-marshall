@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const resetToast = (state) => {
   state.isOpen = false;
   state.message = "";
-  state.type = "";
 };
 
 export const toastSlice = createSlice({

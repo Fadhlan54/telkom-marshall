@@ -2,8 +2,7 @@ import { useState } from "react";
 import FormStep from "../common/FormStep";
 import TextInput from "../inputs/TextInput";
 import handleStep from "@/utils/handleStep";
-
-const totalSteps = 3;
+import TextAreaInput from "../inputs/TextAreaInput";
 
 export default function FeedbackModuleForm({ setgenerateModuleStep }) {
   const [currentStep, setCurrentStep] = useState(1);
@@ -25,6 +24,8 @@ export default function FeedbackModuleForm({ setgenerateModuleStep }) {
     ],
   });
 
+  const [totalSteps, setTotalSteps] = useState(4);
+
   const handleChange = (e) => {
     setForm((prev) => ({
       ...prev,
@@ -34,22 +35,52 @@ export default function FeedbackModuleForm({ setgenerateModuleStep }) {
   return (
     <form action="">
       <h3 className="text-center font-semibold text-2xl">Feedback</h3>
-      <div className="mt-4 mb-2 md:mb-4 flex flex-col md:flex-row justify-end items-start gap-4 md:gap-6">
+      <div className="mt-4 mb-2 flex flex-col md:flex-row justify-end items-start gap-4 md:gap-6">
         <FormStep currentStep={currentStep} totalSteps={totalSteps} />
       </div>
-      <div>
-        <TextInput
-          id={"moduleTitle"}
-          value={form.moduleTitle}
-          handleChange={handleChange}
-          label={"Module Title"}
-        />
-        <p className="text-xs mt-1 text-neutral-500">
-          Judul module yang akan digenerate, ubah apabila tidak sesuai
-        </p>
-      </div>
+      {currentStep === 1 && (
+        <div>
+          <TextInput
+            id={"moduleTitle"}
+            value={form.moduleTitle}
+            handleChange={handleChange}
+            label={"Module Title"}
+          />
+          <p className="text-xs mt-1 text-neutral-500">
+            Judul module yang akan digenerate, ubah apabila tidak sesuai
+          </p>
+        </div>
+      )}
+      {currentStep > 1 && (
+        <div>
+          {form.feedback.map((item, index) => (
+            <div key={index} className="flex flex-col">
+              {currentStep === index + 2 && (
+                <div>
+                  <TextInput
+                    id={`topic-${index}`}
+                    value={item.topic}
+                    handleChange={handleChange}
+                    label={"Topic " + (index + 1)}
+                  />
+                  {item.subtopic.map((subtopic, index) => (
+                    <div key={index} className="my-4">
+                      <TextAreaInput
+                        id={`subtopic-${index}`}
+                        value={subtopic}
+                        handleChange={handleChange}
+                        label={"Subtopic " + (index + 1)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
       <div
-        className={`mt-4 flex ${
+        className={`mt-2 flex ${
           currentStep > 1 ? "justify-between" : "justify-end"
         }`}
       >
@@ -71,7 +102,10 @@ export default function FeedbackModuleForm({ setgenerateModuleStep }) {
         ) : (
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-            onClick={(e) => console.log("submit")}
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("submit");
+            }}
           >
             Submit
           </button>

@@ -64,14 +64,15 @@ export default function ReviewModulePage() {
                 <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
                   EYD oke
                 </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas
-                  Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas
-                  Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas
-                  Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas
+                {/* TODO add -webkit-box-orient: horizontal; */}
+                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words max-w-72 text-pretty line-clamp-horizontal-3">
+                  {`Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas Kalimat tersebut sudah jelas`.slice(
+                    0,
+                    130
+                  ) + "..."}
                 </td>
-                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words">
-                  Konten sudah oke
+                <td className="px-3 py-2 border border-t-0 border-r-0 border-black break-words max-w-72 text-pretty line-clamp-horizontal-3">
+                  {`Konten sudah oke Konten sudah oke Konten sudah oke Konten sudah oke Konten sudah oke Konten sudah oke`}
                 </td>
                 <td className="px-3 py-2 text-center border border-t-0 border-black">
                   <input type="checkbox" name="" id="" />

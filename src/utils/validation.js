@@ -6,9 +6,10 @@ export const validateUsername = (username) => {
 };
 
 export const validatePassword = (password) => {
-  return String(password).match(
-    /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
-  );
+  // return String(password).match(
+  //   /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+  // );
+  return password.length >= 8;
 };
 
 export const validateEmail = (email) => {

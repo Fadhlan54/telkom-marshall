@@ -7,15 +7,13 @@ import {
   RiArrowDownSLine,
   RiHomeLine,
   RiArrowUpSLine,
-  RiArrowDropRightLine,
-  RiSettings3Line,
   RiBook3Line,
   RiCustomerService2Line,
 } from "react-icons/ri";
 
 import { useSelector } from "react-redux";
 import { selectIsFullSideNavVisible } from "@/lib/slices/navbarSlice";
-import Link from "next/link";
+import CustomLink from "../common/CustomLink";
 import { BsDot } from "react-icons/bs";
 
 export default function FullSideNavigation() {
@@ -43,19 +41,19 @@ export default function FullSideNavigation() {
           </div>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
-              <Link
+              <CustomLink
                 href="/"
-                className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200"
+                className="px-2 py-1.5 rounded flex flex-shrink-0  gap-2 items-center hover:bg-neutral-200 w-full"
               >
                 <RiHomeLine className="w-4 h-4" /> Home
-              </Link>
+              </CustomLink>
             </li>
             <li>
               <button
                 onClick={(e) => toggleMenu(e, "create")}
-                className="px-2 py-1.5 rounded flex justify-between items-center hover:bg-neutral-200 w-full mb-1.5"
+                className="px-2 py-1.5 rounded flex flex-shrink-0 justify-between items-center hover:bg-neutral-200 w-full mb-1.5"
               >
-                <span className="flex items-center gap-2">
+                <span className="flex flex-shrink-0 items-center gap-2">
                   <RiFileAddLine className="w-4 h-4" /> Create
                 </span>
 
@@ -72,62 +70,67 @@ export default function FullSideNavigation() {
               >
                 <ul>
                   <li>
-                    <Link
+                    <CustomLink
                       href="/review-module"
-                      className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
+                      className="px-2 py-1.5 rounded flex flex-shrink-0 items-center hover:bg-neutral-200 w-full"
                     >
                       <BsDot className="w-5 h-5 mr-1" />
                       Review Module
-                    </Link>
+                    </CustomLink>
                   </li>
                   <li>
-                    <Link
+                    <CustomLink
                       href="/module"
-                      className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
+                      className="px-2 py-1.5 rounded flex flex-shrink-0 items-center hover:bg-neutral-200 w-full"
                     >
                       <BsDot className="w-5 h-5 mr-1" />
                       Generate Module
-                    </Link>
+                    </CustomLink>
                   </li>
                   <li>
-                    <Link
+                    <CustomLink
                       href="/e-book"
-                      className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200"
+                      className="px-2 py-1.5 rounded flex flex-shrink-0 items-center hover:bg-neutral-200 w-full"
                     >
                       <BsDot className="w-5 h-5 mr-1" />
                       Update Ebook
-                    </Link>
+                    </CustomLink>
                   </li>
-                  <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
+                  <li className="px-2 py-1.5 rounded flex flex-shrink-0 items-center hover:bg-neutral-200">
                     <BsDot className="w-5 h-5 mr-1" /> CoQa
                   </li>
-                  <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
+                  <li className="px-2 py-1.5 rounded flex flex-shrink-0 items-center hover:bg-neutral-200">
                     <BsDot className="w-5 h-5 mr-1" /> Mapping Dirkom
                   </li>
-                  <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
+                  <li className="px-2 py-1.5 rounded flex flex-shrink-0 items-center hover:bg-neutral-200">
                     <BsDot className="w-5 h-5 mr-1" /> Audio Learning
                   </li>
-                  <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
+                  <li className="px-2 py-1.5 rounded flex flex-shrink-0 items-center hover:bg-neutral-200">
                     <BsDot className="w-5 h-5 mr-1" /> Video Learning
                   </li>
                 </ul>
               </div>
             </li>
 
-            <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200">
-              <RiBook3Line className="w-4 h-4" />
-              E-library
+            <li>
+              <CustomLink
+                href={"/e-library"}
+                className="px-2 py-1.5 rounded flex flex-shrink-0 gap-2 items-center hover:bg-neutral-200 w-full"
+              >
+                <RiBook3Line className="w-4 h-4" />
+                E-library
+              </CustomLink>
             </li>
 
             <li>
-              <Link
+              <CustomLink
                 href="/request-history"
-                className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200"
+                className="px-2 py-1.5 rounded flex flex-shrink-0 gap-2 items-center hover:bg-neutral-200 w-full"
               >
                 <RiHistoryFill className="w-4 h-4" /> View Request History
-              </Link>
+              </CustomLink>
             </li>
-            <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200">
+            <li className="px-2 py-1.5 rounded flex flex-shrink-0 gap-2 items-center hover:bg-neutral-200 w-full">
               <RiCustomerService2Line className="w-4 h-4" />
               Need Help?
             </li>
