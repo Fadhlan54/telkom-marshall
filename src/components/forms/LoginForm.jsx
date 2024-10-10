@@ -2,70 +2,99 @@
 
 import { IoMailOutline } from "react-icons/io5";
 import AuthInput from "../inputs/AuthInput";
-import { RiLockPasswordLine } from "react-icons/ri";
+import { RiLoader4Fill, RiLockPasswordLine } from "react-icons/ri";
 import Link from "next/link";
-import { openToast } from "@/lib/slices/toastSlice";
+import { showToastWithTimeout } from "@/lib/slices/toastSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import useBeforeUnload from "@/hooks/useBeforeUnload";
+import { loginService } from "@/service/authentication";
+import { useRouter } from "next/navigation";
+import { setCookies } from "@/utils/setCookies";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isError, setIsError] = useState(false);
-  const [hasChanged, setHasChanged] = useState(false);
-  const handleLogin = (e) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username === "admin" && password === "admin") {
-      setIsError(false);
+
+    if (!username || !password) {
       dispatch(
-        openToast({
-          message: "Login Success",
-          type: "success",
-          duration: 3000,
-        })
-      );
-    } else {
-      setIsError(true);
-      dispatch(
-        openToast({
-          message: "Invalid username or password",
+        showToastWithTimeout({
           type: "danger",
-          duration: 3000,
+          message: "Username and password are required",
+          duration: 6000,
         })
       );
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await loginService(username, password);
+      console.log(response);
+      if (response.statusCode === 400) {
+        dispatch(
+          showToastWithTimeout({
+            type: "danger",
+            message: "Incorrect username or password",
+            duration: 6000,
+          })
+        );
+        return;
+      }
+      if (response.statusCode === 404) {
+        dispatch(
+          showToastWithTimeout({
+            type: "danger",
+            message: "User not found",
+            duration: 6000,
+          })
+        );
+        return;
+      }
+      if (response.statusCode === 201) {
+        dispatch(
+          showToastWithTimeout({
+            type: "success",
+            message: "successfully logged in",
+            duration: 6000,
+          })
+        );
+        await setCookies("access_token", response.result.access_token);
+        await setCookies("refresh_token", response.result.refresh_token);
+        router.push("/");
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useBeforeUnload(hasChanged);
-
-  const handleHasChanged = () => {
-    setHasChanged(true);
-  };
-
   return (
-    <form className="w-full" onChange={handleHasChanged}>
+    <form className="w-full">
       <AuthInput
-        iId="username"
-        iLabel="Username"
-        iPlaceholder="Enter your username"
-        iIcon={<IoMailOutline className="w-4 h-4 text-[#606060]" />}
-        iState={username}
-        isError={isError}
-        iSetState={setUsername}
-        cClass="mb-5"
+        id="username"
+        label="Username"
+        placeholder="Enter your username"
+        icon={<IoMailOutline className="w-4 h-4 text-[#606060]" />}
+        value={username}
+        setValue={setUsername}
+        className="mb-5"
       />
 
       <AuthInput
-        iId="password"
+        id="password"
         iType="password"
-        iLabel="Password"
-        iPlaceholder="Enter your password"
-        iIcon={<RiLockPasswordLine className="w-4 h-4 text-[#606060]" />}
-        iState={password}
-        isError={isError}
-        iSetState={setPassword}
+        label="Password"
+        placeholder="Enter your password"
+        icon={<RiLockPasswordLine className="w-4 h-4 text-[#606060]" />}
+        value={password}
+        setValue={setPassword}
       />
       <Link
         href="#"
@@ -74,10 +103,17 @@ export default function LoginForm() {
         Forgot password?
       </Link>
       <button
-        className="bg-[#D2D2D2] hover:bg-[#bdbdbd] text-white w-full rounded-full py-2 text-sm font-semibold mb-2"
+        className="bg-[#D2D2D2] hover:bg-[#bdbdbd] text-white w-full rounded-full py-2 text-sm font-semibold mb-2 flex items-center justify-center gap-1"
         onClick={(e) => handleLogin(e)}
+        disabled={isLoading}
       >
-        Login
+        {isLoading ? (
+          <>
+            <RiLoader4Fill className=" w-5 h-5 animate-spin" /> Loading...
+          </>
+        ) : (
+          "Login"
+        )}
       </button>
       <p className="text-center text-sm text-[#757575]">
         don&apos;t have an account?{" "}

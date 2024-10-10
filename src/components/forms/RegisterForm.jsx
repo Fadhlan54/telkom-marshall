@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RiLockPasswordLine } from "react-icons/ri";
+import { RiLockPasswordLine, RiUser3Line, RiUserLine } from "react-icons/ri";
 import AuthInput from "../inputs/AuthInput";
 import { IoMailOutline } from "react-icons/io5";
 import { useState } from "react";
@@ -11,7 +11,8 @@ import {
   validatePassword,
   validateUsername,
 } from "@/utils/validation";
-import useBeforeUnload from "@/hooks/useBeforeUnload";
+import { BiRename } from "react-icons/bi";
+import { registerService } from "@/service/authentication";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -26,35 +27,48 @@ export default function RegisterForm() {
   const [passwordError, setPasswordError] = useState("");
   const [emptyFieldError, setEmptyFieldError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasChanged, setHasChanged] = useState(false);
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    console.log("register");
     reset();
 
     setIsLoading(true);
 
     try {
-      setTimeout(() => {}, 3000);
-      if (validateForm()) {
-        dispatch(
-          openToast({
-            message: "Register Successful",
-            type: "success",
-            duration: 6000,
-          })
-        );
-        router.push("/login");
-      } else {
+      if (!validateForm()) {
+        return;
+      }
+      const response = await registerService({
+        email,
+        username,
+        fullname,
+        password,
+      });
+
+      console.log(response);
+
+      if (response.statusCode !== 201) {
         dispatch(
           showToastWithTimeout({
-            message: "[Error message from backend]",
+            message: response.message,
             type: "danger",
             duration: 8000,
           })
         );
+        return;
       }
+
+      dispatch(
+        showToastWithTimeout({
+          message: "Registration successful",
+          type: "success",
+          duration: 8000,
+        })
+      );
+      router.push("/login");
     } catch (error) {
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -104,61 +118,60 @@ export default function RegisterForm() {
     setPasswordError("");
   };
 
-  useBeforeUnload(hasChanged);
-
   return (
-    <form className="w-full" onChange={() => setHasChanged(true)}>
+    <form className="w-full" action={""}>
       {emptyFieldError && (
         <p className="text-sm text-red-600 text-center mb-4">
           All fields are required
         </p>
       )}
       <AuthInput
-        iId="email"
-        iLabel="Email"
-        iPlaceholder="Enter your email"
-        iIcon={<IoMailOutline className="w-4 h-4 text-[#606060]" />}
-        iState={email}
+        id="email"
+        label="Email"
+        placeholder="Enter your email"
+        icon={<IoMailOutline className="w-4 h-4 text-[#606060]" />}
+        value={email}
         errorMessage={emailError}
-        iType="email"
-        iSetState={setEmail}
-        cClass="mb-5"
+        type="email"
+        setValue={setEmail}
+        className="mb-5"
       />
       <AuthInput
-        iId="username"
-        iLabel="Username"
-        iPlaceholder="Enter your username"
-        iIcon={<IoMailOutline className="w-4 h-4 text-[#606060]" />}
-        iState={username}
+        id="username"
+        label="Username"
+        placeholder="Enter your username"
+        icon={<RiUser3Line className="w-4 h-4 text-[#606060]" />}
+        value={username}
         errorMessage={usernameError}
-        iSetState={setUsername}
-        cClass="mb-5"
+        setValue={setUsername}
+        className="mb-5"
       />
       <AuthInput
-        iId="fullname"
-        iLabel="Full Name"
-        iPlaceholder="Enter your full name"
-        iIcon={<IoMailOutline className="w-4 h-4 text-[#606060]" />}
-        iState={fullname}
+        id="name"
+        label="Name"
+        placeholder="Enter your name"
+        icon={<BiRename className="w-4 h-4 text-[#606060]" />}
+        value={fullname}
         errorMessage={fullnameError}
-        iSetState={setFullname}
-        cClass="mb-5"
+        setValue={setFullname}
+        className="mb-5"
       />
       <AuthInput
-        iId="password"
-        iType="password"
-        iLabel="Password"
-        iPlaceholder="Enter your password"
-        iIcon={<RiLockPasswordLine className="w-4 h-4 text-[#606060]" />}
-        iState={password}
+        id="password"
+        type="password"
+        label="Password"
+        placeholder="Enter your password"
+        icon={<RiLockPasswordLine className="w-4 h-4 text-[#606060]" />}
+        value={password}
         errorMessage={passwordError}
-        iSetState={setPassword}
-        cClass="mb-5"
+        setValue={setPassword}
+        className="mb-5"
       />
       <button
         className="bg-[#D2D2D2] hover:bg-[#bdbdbd] text-white w-full rounded-full py-2 text-sm font-semibold mb-2"
         onClick={(e) => handleRegister(e)}
         disabled={isLoading}
+        type="button"
       >
         {isLoading ? "Loading..." : "Register"}
       </button>
