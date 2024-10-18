@@ -21,10 +21,14 @@ import { showToastWithTimeout } from "@/lib/slices/toastSlice";
 import Loading from "@/components/common/Loading";
 import { setHasChanged } from "@/lib/slices/hasChangedSlice";
 import MultiSelectInput from "@/components/inputs/MultiSelectInput";
+import Chip from "@/components/common/Chip";
+import Button from "@/components/common/Button";
+import { useRouter } from "next/navigation";
 
 const totalSteps = 4;
 
 export default function Ebook() {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   // form data state
@@ -238,6 +242,12 @@ export default function Ebook() {
     dispatch(setHasChanged(true));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(setHasChanged(false));
+    router.push("/e-book/1");
+  };
+
   // API CALLS
   const getCompetenceNameByGroup = useMemo(
     () => async (group) => {
@@ -357,31 +367,23 @@ export default function Ebook() {
             <div className="flex flex-wrap gap-2 text-xs mt-1">
               {competenceName.length > 0 &&
                 competenceName.map((item, index) => (
-                  <div
-                    className="px-3 py-1 rounded-full flex gap-1 items-center bg-neutral-200"
+                  <Chip
                     key={index}
+                    onClose={(e) => {
+                      e.preventDefault();
+                      setCompetenceName(
+                        competenceName.filter((name) => name !== item)
+                      );
+                    }}
                   >
                     <p>{item}</p>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setCompetenceName(
-                          competenceName.filter((name) => name !== item)
-                        );
-                      }}
-                    >
-                      <RiCloseFill className="h-3 w-3 text-alert-danger" />
-                    </button>
-                  </div>
+                  </Chip>
                 ))}
             </div>
             <div className="flex justify-end gap-2">
-              <button
-                className="p-2 text-sm text-white bg-blue-600 rounded-lg font-medium"
-                onClick={(e) => handleAddCompetence(e)}
-              >
+              <Button variant="primary" onClick={(e) => handleAddCompetence(e)}>
                 Tambahkan
-              </button>
+              </Button>
             </div>
           </div>
         </Modal>
@@ -444,37 +446,32 @@ export default function Ebook() {
             </div>
             <div className="flex flex-wrap gap-2 text-xs mt-1">
               {competenceNameEdit.map((item, index) => (
-                <div
-                  className="px-3 py-1 rounded-full flex gap-1 items-center bg-neutral-200"
+                <Chip
                   key={index}
+                  onClose={(e) => {
+                    e.preventDefault();
+                    setCompetenceNameEdit(
+                      competenceNameEdit.filter((name) => name !== item)
+                    );
+                  }}
                 >
-                  <p>{item}</p>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setCompetenceNameEdit(
-                        competenceNameEdit.filter((name) => name !== item)
-                      );
-                    }}
-                  >
-                    <RiCloseFill className="h-3 w-3 text-alert-danger" />
-                  </button>
-                </div>
+                  {item}
+                </Chip>
               ))}
             </div>
-            <div className="flex justify-end gap-2">
-              <button
-                className="px-4 py-2 text-sm text-white bg-alert-danger rounded-lg font-medium"
+            <div className="flex justify-end gap-2 pt-1">
+              <Button
+                variant="danger"
                 onClick={(e) => handleDeleteCompetence(e)}
               >
                 Remove
-              </button>
-              <button
-                className="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg font-medium"
+              </Button>
+              <Button
+                variant="primary"
                 onClick={(e) => handleEditCompetence(e)}
               >
                 Edit
-              </button>
+              </Button>
             </div>
           </div>
         </Modal>
@@ -508,11 +505,13 @@ export default function Ebook() {
                 <p className="font-semibold text-sm">
                   Kompetensi <span className="text-alert-danger">*</span>
                 </p>
-                <div className="p-2 border-2 border-neutral-400 rounded">
+                <div className="p-2 border-2 border-grey-2 rounded">
                   {!form.competences ||
                     (form.competences.length === 0 && (
-                      <div className="flex flex-col items-center text-center text-neutral-400">
-                        <p>Belum ada kompetensi</p>
+                      <div className="flex flex-col items-center text-center ">
+                        <p className="text-primary-1 font-medium">
+                          Belum ada kompetensi
+                        </p>
                         <Image
                           src={"/gifs/empty_animation.gif"}
                           alt=""
@@ -520,12 +519,12 @@ export default function Ebook() {
                           height={180}
                           unoptimized
                         />
-                        <button
-                          className="text-blue-600 text-sm"
+                        <Button
+                          variant="transparent"
                           onClick={(e) => showCreateCompetenceModal(e)}
                         >
                           + Tambahkan Kompetensi
-                        </button>
+                        </Button>
                       </div>
                     ))}
 
@@ -533,7 +532,7 @@ export default function Ebook() {
                     form.competences.map((item, index) => (
                       <div
                         key={index}
-                        className="flex justify-between items-start p-2 border-2 border-neutral-400 rounded text-sm mb-2"
+                        className="flex justify-between items-start p-2 border-2 border-grey-2 rounded text-sm mb-2"
                       >
                         <div className="">
                           <p>
@@ -542,19 +541,14 @@ export default function Ebook() {
                             </span>{" "}
                             {item.group}
                           </p>
-                          <div className="flex flex-wrap gap-2 mt-1">
+                          <div className="flex items-center flex-wrap gap-2 mt-1">
                             <p>
                               <span className="font-medium inline-block">
                                 Nama Kompetensi:{" "}
                               </span>
                             </p>
                             {item.names.map((name, index) => (
-                              <p
-                                key={index}
-                                className="inline-block text-xs px-3 py-1 bg-neutral-200 rounded-full"
-                              >
-                                {name}
-                              </p>
+                              <Chip key={index}>{name}</Chip>
                             ))}
                           </div>
                         </div>
@@ -567,12 +561,13 @@ export default function Ebook() {
                       </div>
                     ))}
                   {form.competences.length > 0 && (
-                    <button
-                      className="text-blue-600 text-sm"
+                    <Button
+                      variant="transparent"
+                      size="transparent"
                       onClick={(e) => showCreateCompetenceModal(e)}
                     >
                       + Tambahkan Kompetensi Baru
-                    </button>
+                    </Button>
                   )}
                 </div>
               </>
@@ -657,23 +652,23 @@ export default function Ebook() {
             )}
 
             <div
-              className={`pt-3 flex  ${
+              className={`pt-1 flex  ${
                 currentStep > 1 ? "justify-between" : "justify-end"
               }`}
             >
               {currentStep > 1 && (
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                <Button
+                  variant="danger"
                   onClick={(e) =>
                     handleStep(e, currentStep, setCurrentStep, "prev")
                   }
                 >
                   Previous
-                </button>
+                </Button>
               )}
               {currentStep < totalSteps ? (
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                <Button
+                  variant="primary"
                   onClick={(e) =>
                     handleStep(
                       e,
@@ -685,14 +680,11 @@ export default function Ebook() {
                   }
                 >
                   Next
-                </button>
+                </Button>
               ) : (
-                <Link
-                  href={"/e-book/1"}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                >
+                <Button variant="primary" href={"/e-book/preview"}>
                   Submit
-                </Link>
+                </Button>
               )}
             </div>
           </form>

@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/common/Button";
 import Filter from "@/components/common/Filter";
 import Loading from "@/components/common/Loading";
 import PaginationButtons from "@/components/common/PaginationButtons";
@@ -182,18 +183,21 @@ function RequestHistory() {
                   </div>
                 </div>
                 <div className="mt-4 flex justify-end gap-2">
-                  <button
+                  <Button
+                    variant="danger"
                     className="px-4 py-2 bg-alert-danger text-white rounded"
                     onClick={(e) => resetFilter(e)}
                   >
                     Reset
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="md"
                     className="px-4 py-2 bg-alert-success text-white rounded"
                     onClick={(e) => applyFilter(e)}
                   >
                     Apply
-                  </button>
+                  </Button>
                 </div>
               </Filter>
             </div>
@@ -204,63 +208,63 @@ function RequestHistory() {
             />
             <div className="overflow-x-auto mb-2">
               <table className="w-full text-left rtl:text-right text-gray-500 border-separate border-spacing-0 text-xs">
-                <thead className=" text-gray-700 uppercase bg-gray-50 text-center">
-                  <tr className="bg-neutral-200">
+                <thead className="uppercase text-center bg-primary-1 text-white">
+                  <tr>
                     <th
                       scope="col"
-                      className="px-3 py-2 border border-r-0 border-black rounded-tl-lg font-semibold w-10 whitespace-nowrap"
+                      className="px-3 py-3 border border-r-0 border-secondary-1 rounded-l-lg font-semibold w-10 whitespace-nowrap text-start"
                     >
                       No
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap"
+                      className="px-3 py-3 border-y border-secondary-1 font-semibold whitespace-nowrap text-start"
                     >
                       Request Date
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap"
+                      className="px-3 py-3 border-y border-secondary-1 font-semibold whitespace-nowrap text-start"
                     >
                       Type
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap min-w-40"
+                      className="px-3 py-3 border-y border-secondary-1 font-semibold whitespace-nowrap min-w-40 text-start"
                     >
                       Details
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap"
+                      className="px-3 py-3 border-y border-secondary-1 font-semibold whitespace-nowrap text-start"
                     >
                       Status
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2 border border-r-0 border-black font-semibold whitespace-nowrap"
+                      className="px-3 py-3 border-y border-secondary-1 font-semibold whitespace-nowrap text-start"
                     >
                       User
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2 text-center border border-black rounded-tr-lg w-[5.5rem] font-semibold whitespace-nowrap"
+                      className="ps-3 pe-6 py-3 border border-l-0 border-secondary-1 rounded-r-lg w-[5.5rem] font-semibold whitespace-nowrap text-start"
                     >
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="[&>*:nth-child(even)]:bg-neutral-200">
+                <tbody>
                   {data.map((item, index) => (
                     <tr key={index}>
                       <td
-                        className={`px-3 py-2 border border-t-0 border-r-0 border-black ${
+                        className={`px-3 py-2 border-b  border-neutral-300 ${
                           data.length === index + 1 && "rounded-bl-lg"
                         }`}
                       >
                         {item.no}
                       </td>
-                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
+                      <td className="px-3 py-2 border-b border-neutral-300">
                         {new Date(item.date).toLocaleString("in-ID", {
                           weekday: "short",
                           year: "numeric",
@@ -272,26 +276,24 @@ function RequestHistory() {
                           hour12: false,
                         })}
                       </td>
-                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
+                      <td className="px-3 py-2 border-b border-neutral-300">
                         {item.type}
                       </td>
-                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black max-w-64 ">
+                      <td className="px-3 py-2 border-b border-neutral-300 max-w-64 ">
                         {item.details.length > 80 ? (
                           <>{item.details.slice(0, 80)}...</>
                         ) : (
                           <>{item.details}</>
                         )}
                       </td>
-                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
+                      <td className="px-3 py-2 border-b border-neutral-300">
                         {item.status}
                       </td>
-                      <td className="px-3 py-2 border border-t-0 border-r-0 border-black">
+                      <td className="px-3 py-2 border-b border-neutral-300">
                         {item.user}
                       </td>
                       <td
-                        className={`px-3 py-2 text-center border border-t-0 border-black text-medium text-blue-600 ${
-                          data.length === index + 1 && "rounded-br-lg"
-                        }`}
+                        className={`ps-3 pe-6 py-2 text-start border-b border-neutral-300 font-medium text-primary-1`}
                       >
                         <Link href="/request-history/view/1">View</Link>
                       </td>

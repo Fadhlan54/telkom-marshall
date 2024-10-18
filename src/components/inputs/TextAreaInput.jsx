@@ -31,7 +31,7 @@ export default function TextAreaInput({
         name={id}
         id={id}
         rows={rows}
-        className="w-full border-2 border-neutral-400 p-2 rounded-lg min-w-72"
+        className="w-full border-2 border-neutral-400 p-2 resize-none rounded-lg min-w-72 focus:outline-primary-1"
         onChange={(e) => handleChange(e)}
         value={value}
       ></textarea>

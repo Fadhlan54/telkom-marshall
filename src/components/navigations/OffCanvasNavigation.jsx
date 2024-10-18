@@ -69,7 +69,7 @@ export default function OffCanvasNavigation() {
               <li>
                 <CustomLink
                   href="/"
-                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200 w-full"
+                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-primary-1 hover:text-white w-full"
                 >
                   <RiHomeLine className="w-4 h-4" /> Home
                 </CustomLink>
@@ -77,7 +77,7 @@ export default function OffCanvasNavigation() {
               <li>
                 <button
                   onClick={(e) => toggleMenu(e, "create")}
-                  className="px-2 py-1.5 rounded flex justify-between items-center hover:bg-neutral-200 w-full mb-1.5"
+                  className="px-2 py-1.5 rounded flex justify-between items-center hover:bg-primary-1 hover:text-white w-full mb-1.5"
                 >
                   <span className="flex items-center gap-2">
                     <RiFileAddLine className="w-4 h-4" /> Create
@@ -98,7 +98,7 @@ export default function OffCanvasNavigation() {
                     <li>
                       <CustomLink
                         href="/review-module"
-                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200 w-full"
+                        className="px-2 py-1.5 rounded flex items-center hover:bg-primary-1 hover:text-white w-full"
                       >
                         <BsDot className="w-5 h-5 mr-1" />
                         Review Module
@@ -107,7 +107,7 @@ export default function OffCanvasNavigation() {
                     <li>
                       <CustomLink
                         href="/module"
-                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200 w-full"
+                        className="px-2 py-1.5 rounded flex items-center hover:bg-primary-1 hover:text-white w-full"
                       >
                         <BsDot className="w-5 h-5 mr-1" />
                         Generate Module
@@ -116,22 +116,22 @@ export default function OffCanvasNavigation() {
                     <li>
                       <CustomLink
                         href="/e-book"
-                        className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200 w-full"
+                        className="px-2 py-1.5 rounded flex items-center hover:bg-primary-1 hover:text-white w-full"
                       >
                         <BsDot className="w-5 h-5 mr-1" />
                         Update Ebook
                       </CustomLink>
                     </li>
-                    <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
+                    <li className="px-2 py-1.5 rounded flex items-center hover:bg-primary-1 hover:text-white">
                       <BsDot className="w-5 h-5 mr-1" /> CoQa
                     </li>
-                    <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
+                    <li className="px-2 py-1.5 rounded flex items-center hover:bg-primary-1 hover:text-white">
                       <BsDot className="w-5 h-5 mr-1" /> Mapping Dirkom
                     </li>
-                    <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
+                    <li className="px-2 py-1.5 rounded flex items-center hover:bg-primary-1 hover:text-white">
                       <BsDot className="w-5 h-5 mr-1" /> Audio Learning
                     </li>
-                    <li className="px-2 py-1.5 rounded flex items-center hover:bg-neutral-200">
+                    <li className="px-2 py-1.5 rounded flex items-center hover:bg-primary-1 hover:text-white">
                       <BsDot className="w-5 h-5 mr-1" /> Video Learning
                     </li>
                   </ul>
@@ -141,7 +141,7 @@ export default function OffCanvasNavigation() {
               <li>
                 <CustomLink
                   href={"/e-library"}
-                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200 w-full"
+                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-primary-1 hover:text-white w-full"
                 >
                   <RiBook3Line className="w-4 h-4" />
                   E-library
@@ -151,12 +151,12 @@ export default function OffCanvasNavigation() {
               <li>
                 <CustomLink
                   href={"/request-history"}
-                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200 w-full"
+                  className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-primary-1 hover:text-white w-full"
                 >
                   <RiHistoryFill className="w-4 h-4" /> View Request History
                 </CustomLink>
               </li>
-              <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-neutral-200 w-full">
+              <li className="px-2 py-1.5 rounded flex gap-2 items-center hover:bg-primary-1 hover:text-white w-full">
                 <RiCustomerService2Line className="w-4 h-4" />
                 Need Help?
               </li>

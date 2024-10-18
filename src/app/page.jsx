@@ -100,7 +100,7 @@ export default function Home() {
 
             <div className="text-neutral-600 text-sm flex sm:hidden mb-2 w-full h-fit ">
               <label
-                htmlFor="search-reference"
+                htmlFor="search-reference-mobile"
                 className="flex items-center bg-neutral-200 p-2 rounded-s-xl"
               >
                 <HiSearch className="w-4 h-4" />
@@ -108,7 +108,7 @@ export default function Home() {
               <input
                 type="text"
                 className="bg-neutral-200 rounded-e-xl outline-none w-full py-2 pe-4 block"
-                id="search-reference"
+                id="search-reference-mobile"
                 placeholder="Search reference"
               />
             </div>

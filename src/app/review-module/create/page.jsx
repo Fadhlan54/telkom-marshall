@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/common/Button";
 import DragNDropInput from "@/components/inputs/DragNDropInput";
 import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
@@ -56,7 +57,7 @@ export default function ReviewPage() {
           </div>
 
           <div className="flex flex-wrap md:flex-nowrap gap-8 mt-4">
-            <div className="w-full md:w-1/2">
+            <div className="w-full">
               <DragNDropInput
                 stateFile={pptFile}
                 setStateFile={setPptFile}
@@ -66,25 +67,12 @@ export default function ReviewPage() {
                 required
               />
             </div>
-
-            <div className="w-full md:w-1/2">
-              <DragNDropInput
-                stateFile={ebookFile}
-                setStateFile={setEbookFile}
-                label={"File Ebook Reference PDF (optional)"}
-                id={"ebook-input"}
-                type="pdf"
-              />
-            </div>
           </div>
 
-          <div className="flex justify-end">
-            <Link
-              href="/review-module/view/1"
-              className="inline-block px-6 py-2 bg-[#E8E8E8] rounded-lg mt-2"
-            >
+          <div className="flex justify-end mt-2">
+            <Button variant="primary" size="lg" href="/review-module/view/1">
               Review
-            </Link>
+            </Button>
           </div>
         </form>
       </ContentLayout>

@@ -7,7 +7,8 @@ import Image from "next/image";
 export default function Login() {
   return (
     <AuthLayout>
-      <div className="bg-[#E8E8E8] p-6 pb-8  rounded-lg w-full flex flex-col items-center shadow">
+      <div className="min-h-screen hidden md:flex flex-col justify-center items-center w-[55%]"></div>
+      <div className="bg-white py-4 lg:py-6 px-4 md:px-6 lg:px-8 pb-8 w-full md:w-[45%] flex flex-col items-center justify-center shadow min-h-screen">
         <Image
           src={"/images/logo.png"}
           alt="Telkom Marshall Logo"

@@ -12,10 +12,13 @@ import {
   RiDvdLine,
   RiSettings4Fill,
 } from "react-icons/ri";
+import { FaWandMagicSparkles } from "react-icons/fa6";
 import { setHasChanged } from "@/lib/slices/hasChangedSlice";
 import Modal from "../modals/Modal";
 import CustomLink from "../common/CustomLink";
 import MultiSelectInput from "../inputs/MultiSelectInput";
+import Chip from "../common/Chip";
+import Button from "../common/Button";
 
 const totalSteps = 4;
 
@@ -52,25 +55,39 @@ export default function GenerateModuleForm({ setGenerateModuleStep }) {
   };
 
   const validateNextStep = () => {
-    if (currentStep === 1) {
-      if (
-        !form.competenceName ||
-        !form.competenceGroup ||
-        !form.competenceLevel
-      ) {
-        dispatch(
-          showToastWithTimeout({
-            type: "danger",
-            message:
-              "'Competence Name', 'Competence Group' and 'Competence Level' are required",
-            duration: 4000,
-          })
-        );
-        return false;
-      }
-      return true;
-    } else {
-      return true;
+    switch (currentStep) {
+      case 1:
+        if (
+          !form.competenceName ||
+          !form.competenceGroup ||
+          !form.competenceLevel
+        ) {
+          dispatch(
+            showToastWithTimeout({
+              type: "danger",
+              message:
+                "'Competence Name', 'Competence Group' and 'Competence Level' are required",
+              duration: 4000,
+            })
+          );
+          return false;
+        }
+        return true;
+
+      case 2:
+        if (!form.moduleTitle || !form.elo) {
+          dispatch(
+            showToastWithTimeout({
+              type: "danger",
+              message: "'Module Title' and 'ELO' are required",
+              duration: 4000,
+            })
+          );
+          return false;
+        }
+        return true;
+      default:
+        return true;
     }
   };
 
@@ -151,7 +168,7 @@ export default function GenerateModuleForm({ setGenerateModuleStep }) {
             </button>
           </div>
           <button
-            className="p-4 mt-3 bg-neutral-200 w-full rounded-md flex items-center gap-3"
+            className="p-4 mt-3 bg-primary-1 hover:bg-primary-2 focus:bg-primary-3 text-white w-full rounded-md flex items-center gap-3"
             onClick={handleCustomGenerate}
           >
             <RiSettings4Fill className="h-14 w-14 md:h-16 md:w-16" />
@@ -166,7 +183,7 @@ export default function GenerateModuleForm({ setGenerateModuleStep }) {
           </button>
           <CustomLink
             href={"module/1"}
-            className="p-4 mt-3 bg-neutral-200 w-full rounded-md flex items-center gap-3"
+            className="p-4 mt-3 bg-soft-1 hover:bg-soft-2 focus:bg-soft-3 text-primary-1 border border-primary-1 w-full rounded-md flex items-center gap-3"
             submit
           >
             <RiDvdLine className="h-14 w-14 md:h-16 md:w-16 rotate-6" />
@@ -241,18 +258,33 @@ export default function GenerateModuleForm({ setGenerateModuleStep }) {
       )}
       {currentStep === 2 && (
         <div className="space-y-4">
-          <TextInput
-            id={"moduleTitle"}
-            value={form.moduleTitle}
-            handleChange={handleChange}
-            label={"Module Title"}
-          />
-          <TextAreaInput
-            id={"elo"}
-            value={form.elo}
-            handleChange={handleChange}
-            label={"Enable Learning Objective"}
-          />
+          <div>
+            <TextInput
+              id={"moduleTitle"}
+              value={form.moduleTitle}
+              handleChange={handleChange}
+              label={"Module Title"}
+              required
+            />
+            <Button variant="transparent" className={"mt-1"}>
+              <FaWandMagicSparkles />
+              Auto Complete Title with AI
+            </Button>
+          </div>
+
+          <div>
+            <TextAreaInput
+              id={"elo"}
+              value={form.elo}
+              handleChange={handleChange}
+              label={"Enable Learning Objective (ELO)"}
+              required
+            />
+            <Button variant="transparent" className={"mt-1"}>
+              <FaWandMagicSparkles />
+              Auto Complete ELO with AI
+            </Button>
+          </div>
         </div>
       )}
       {currentStep === 3 && (
@@ -316,20 +348,16 @@ export default function GenerateModuleForm({ setGenerateModuleStep }) {
               <div className="flex flex-wrap gap-2 text-xs mt-2">
                 {form.ebookReference.length > 0 &&
                   form.ebookReference.map((item, index) => (
-                    <div
+                    <Chip
                       className="px-3 py-1 rounded-full flex gap-1 items-center bg-neutral-200"
                       key={index}
+                      onClose={(e) => {
+                        e.preventDefault();
+                        deleteEbookReference(index);
+                      }}
                     >
                       <p>{item}</p>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          deleteEbookReference(index);
-                        }}
-                      >
-                        <RiCloseFill className="h-3 w-3 text-alert-danger" />
-                      </button>
-                    </div>
+                    </Chip>
                   ))}
               </div>
             </div>
@@ -342,16 +370,16 @@ export default function GenerateModuleForm({ setGenerateModuleStep }) {
         }`}
       >
         {currentStep > 1 && (
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded-lg"
+          <Button
+            variant="danger"
             onClick={(e) => handleStep(e, currentStep, setCurrentStep, "prev")}
           >
             Previous
-          </button>
+          </Button>
         )}
         {currentStep < totalSteps ? (
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          <Button
+            variant="primary"
             onClick={(e) =>
               handleStep(
                 e,
@@ -363,14 +391,11 @@ export default function GenerateModuleForm({ setGenerateModuleStep }) {
             }
           >
             Next
-          </button>
+          </Button>
         ) : (
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-            onClick={(e) => handleSubmit(e)}
-          >
+          <Button variant="primary" onClick={(e) => handleSubmit(e)}>
             Submit
-          </button>
+          </Button>
         )}
       </div>
     </form>

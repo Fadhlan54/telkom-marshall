@@ -6,7 +6,7 @@ export default function FormStep({ currentStep, totalSteps }) {
         <div
           key={i}
           className={`${
-            currentStep === i ? "bg-neutral-400" : "bg-neutral-200"
+            currentStep === i ? "bg-primary-1" : "bg-neutral-200"
           } h-2 w-8 rounded-full`}
         ></div>
       );

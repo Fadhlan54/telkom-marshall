@@ -129,7 +129,7 @@ export default function RegisterForm() {
         id="email"
         label="Email"
         placeholder="Enter your email"
-        icon={<IoMailOutline className="w-4 h-4 text-[#606060]" />}
+        icon={<IoMailOutline className="w-4 h-4 " />}
         value={email}
         errorMessage={emailError}
         type="email"
@@ -140,7 +140,7 @@ export default function RegisterForm() {
         id="username"
         label="Username"
         placeholder="Enter your username"
-        icon={<RiUser3Line className="w-4 h-4 text-[#606060]" />}
+        icon={<RiUser3Line className="w-4 h-4" />}
         value={username}
         errorMessage={usernameError}
         setValue={setUsername}
@@ -150,7 +150,7 @@ export default function RegisterForm() {
         id="name"
         label="Name"
         placeholder="Enter your name"
-        icon={<BiRename className="w-4 h-4 text-[#606060]" />}
+        icon={<BiRename className="w-4 h-4 " />}
         value={fullname}
         errorMessage={fullnameError}
         setValue={setFullname}
@@ -161,23 +161,26 @@ export default function RegisterForm() {
         type="password"
         label="Password"
         placeholder="Enter your password"
-        icon={<RiLockPasswordLine className="w-4 h-4 text-[#606060]" />}
+        icon={<RiLockPasswordLine className="w-4 h-4 " />}
         value={password}
         errorMessage={passwordError}
         setValue={setPassword}
         className="mb-5"
       />
       <button
-        className="bg-[#D2D2D2] hover:bg-[#bdbdbd] text-white w-full rounded-full py-2 text-sm font-semibold mb-2"
+        className="bg-primary-1 hover:bg-primary-1-hover text-white w-full rounded-full py-2 text-sm font-semibold mb-2"
         onClick={(e) => handleRegister(e)}
         disabled={isLoading}
         type="button"
       >
         {isLoading ? "Loading..." : "Register"}
       </button>
-      <p className="text-center text-sm text-[#757575]">
+      <p className="text-center text-sm text-grey-tertiary">
         Already have an account?{" "}
-        <Link href="/login" className="font-bold">
+        <Link
+          href="/login"
+          className="font-bold text-grey-primary hover:text-grey-secondary"
+        >
           Login
         </Link>
       </p>

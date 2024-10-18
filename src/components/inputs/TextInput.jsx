@@ -1,14 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, forwardRef } from "react";
 
-export default function TextInput({
-  value,
-  handleChange,
-  label,
-  id,
-  onlyNumber = false,
-  maxLength,
-  required,
-}) {
+const TextInput = forwardRef(function TextInput(
+  {
+    id,
+    label,
+    placeholder,
+    value,
+    handleChange,
+    onlyNumber = false,
+    maxLength,
+    required,
+  },
+  ref
+) {
   useEffect(() => {
     if (!handleChange) {
       throw new Error(
@@ -32,7 +36,9 @@ export default function TextInput({
         type="text"
         name={id}
         id={id}
-        className="w-full border-2 border-neutral-400 p-2 rounded-lg"
+        ref={ref}
+        className="w-full border-2 border-neutral-400 p-2 rounded-lg focus:outline-primary-1"
+        placeholder={placeholder}
         onChange={(e) => {
           if (onlyNumber) {
             e.target.value = e.target.value.replace(/[^0-9]/g, "");
@@ -45,4 +51,6 @@ export default function TextInput({
       />
     </div>
   );
-}
+});
+
+export default TextInput;

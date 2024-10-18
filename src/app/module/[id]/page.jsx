@@ -1,3 +1,4 @@
+import Button from "@/components/common/Button";
 import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
 import Image from "next/image";
@@ -14,7 +15,13 @@ export default function ModuleDetailsPage() {
           width={300}
           height={300}
         />
-        <BiLoaderCircle className="my-4 w-24 h-24 animate-spin-fast-to-slow text-neutral-500" />
+        <Image
+          src={"/images/rafiki.png"}
+          width={200}
+          height={200}
+          alt="loading"
+          className="animate-spin-fast-to-slow"
+        />
         <p className="text-center">Generating your module</p>
         <p className="text-center">
           Your status request available in Requests Tab. Check{" "}
@@ -23,12 +30,9 @@ export default function ModuleDetailsPage() {
             here!
           </Link>
         </p>
-        <Link
-          href="/module"
-          className="px-6 py-2 bg-neutral-400 hover:bg-neutral-600 rounded-lg text-white mt-2"
-        >
+        <Button variant="primary" className={"mt-2"} size="lg" href={"/module"}>
           Generate another
-        </Link>
+        </Button>
       </ContentLayout>
     </MainLayout>
   );

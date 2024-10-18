@@ -3,9 +3,9 @@ import Toast from "../common/Toast";
 
 export default function AuthLayout({ children }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="justify-center min-h-screen bg-primary-1">
       <Toast />
-      <div className="w-full max-w-[28rem] py-4 px-6">{children}</div>
+      <div className="w-full flex">{children}</div>
     </div>
   );
 }

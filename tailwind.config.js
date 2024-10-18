@@ -9,15 +9,37 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
         alert: {
-          success: "#73CA5C",
-          danger: "#FF0000",
-          "danger-transparent": "rgba(255, 0, 0, 0.08)",
-          warning: "#F9CC00",
-          "success-hover": "#539F3F",
-          attention: "#F9CC00",
+          success: "#17D079",
+          "success-2": "#23A96A",
+          "success-3": "#178E57",
+          danger: "#F54A45",
+          "danger-2": "#DC3D38",
+          "danger-3": "#C3302C",
+          warning: "#F79009",
+          "warning-2": "#DC6803",
+          "warning-3": "#B54708",
+        },
+        primary: {
+          1: "#0093AD",
+          2: "#00768A",
+          3: "#005868",
+        },
+        secondary: {
+          1: "#1F2855",
+          2: "#192044",
+          3: "#131833",
+        },
+        soft: {
+          1: "#E8F5F8",
+          2: "#CEEBEF",
+          3: "#B1DEF6",
+        },
+        grey: {
+          1: "#E4E6EF",
+          2: "#D0D5DD",
+          3: "#B5B5C3",
+          4: "#8989A3",
         },
       },
       animation: {
@@ -27,8 +49,8 @@ module.exports = {
       keyframes: {
         "spin-fast-to-slow": {
           "0%": { transform: "rotate(0deg)" },
-          "50%": { transform: "rotate(270deg)" },
-          "100%": { transform: "rotate(360deg)" },
+          "50%": { transform: "rotate(1080deg)" },
+          "100%": { transform: "rotate(1800deg)" },
         },
       },
       boxShadow: {

@@ -45,7 +45,7 @@ duration-300 sm:hidden ${visible ? "translate-y-0" : "translate-y-full"}  `}
         <CustomLink
           href={"/"}
           className={`rounded-t-2xl px-4 py-1 flex flex-col items-center ${
-            pathname === "/" && "bg-neutral-300 text-white"
+            pathname === "/" && "bg-primary-1 text-white"
           }`}
         >
           <RiHomeLine />
@@ -54,7 +54,7 @@ duration-300 sm:hidden ${visible ? "translate-y-0" : "translate-y-full"}  `}
         <CustomLink
           href={"/request-history"}
           className={`rounded-t-2xl px-3 py-1 flex flex-col items-center ${
-            pathname === "/request-history" && "bg-neutral-300 text-white"
+            pathname === "/request-history" && "bg-primary-1 text-white"
           }`}
         >
           <RiHistoryFill className="icon" />

@@ -2,21 +2,33 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { RiArrowDownSLine, RiArrowUpSLine, RiMenuLine } from "react-icons/ri";
+import { RiLogoutBoxRLine, RiMenuLine } from "react-icons/ri";
 
 import {
   toggleFullSideNav,
   toggleOffCanvasSideNav,
 } from "@/lib/slices/navbarSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Link from "next/link";
 import { selectHasChanged } from "@/lib/slices/hasChangedSlice";
 import useBeforeUnload from "@/hooks/useBeforeUnload";
+import { getCookies } from "@/utils/cookies";
+import { logoutService } from "@/service/authentication";
+import CustomLink from "../common/CustomLink";
 
 export default function Navbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const dispatch = useDispatch();
   const hasChanged = useSelector(selectHasChanged);
+  const [username, setUsername] = useState("Guest");
+
+  useEffect(() => {
+    const getUsername = async () => {
+      const usernameCookie = await getCookies("username");
+      setUsername(usernameCookie || "Widih Hengker");
+    };
+
+    getUsername();
+  }, []);
 
   const profileRef = useRef(null);
 
@@ -41,6 +53,18 @@ export default function Navbar() {
     }
   };
 
+  const handleLogout = async () => {
+    const token = await getCookies("access_token");
+
+    if (token) {
+      try {
+        const response = await logoutService(token);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
   useBeforeUnload(hasChanged);
 
   useEffect(() => {
@@ -56,7 +80,7 @@ export default function Navbar() {
   return (
     <>
       <div className="w-full h-16"></div>
-      <nav className="bg-white fixed top-0 z-40  w-full border-b border-neutral-400 flex justify-between px-4 md:px-6 items-center h-16">
+      <nav className="bg-white fixed top-0 z-40  w-full border-b border-primary-1 flex justify-between px-4 md:px-6 items-center h-16">
         <div className="flex gap-3 md:gap-4 items-center">
           <button className="lg:hidden">
             <RiMenuLine
@@ -76,7 +100,7 @@ export default function Navbar() {
             width={100}
             height={56.3}
             alt="Indonesia Telecommunication & Digital Research Institute (ITDRI) Logo"
-            className="hidden md:block w-auto h-auto"
+            className="hidden md:block w-[100px] h-auto"
             priority
           />
           <Image
@@ -88,14 +112,16 @@ export default function Navbar() {
           />
         </div>
         <div className="relative flex gap-2 items-center">
+          <div className="flex flex-col justify-center items-end mr-1">
+            <h4 className="leading-4 font-medium text-sm">{username}</h4>
+            <CustomLink href={"/profile"} className="text-xs text-grey-4">
+              profile
+            </CustomLink>
+          </div>
           <div className="rounded-full bg-[#E8E8E8] w-8 h-8"></div>
-          <p className="text-[#757575] mr-1">Admin</p>
-          <button onClick={(e) => toggleProfileMenu(e)}>
-            {showProfileMenu ? (
-              <RiArrowUpSLine className="w-5 h-5" />
-            ) : (
-              <RiArrowDownSLine className="w-5 h-5" />
-            )}
+
+          <button onClick={handleLogout}>
+            <RiLogoutBoxRLine className="w-5 h-5 text-alert-danger hover:text-alert-danger-2 focus:text-alert-danger-3" />
           </button>
 
           {showProfileMenu && (
@@ -106,10 +132,7 @@ export default function Navbar() {
               <p>admin@telkom.com</p>
               <p>administrator</p>
               <p>Profile</p>
-              <Link href="/login" className="block">
-                Login
-              </Link>
-              <Link href="/login">Logout</Link>
+              <button onClick={handleLogout}>Logout</button>
             </div>
           )}
         </div>

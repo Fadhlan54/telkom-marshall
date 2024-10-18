@@ -8,10 +8,10 @@ import MainLayout from "@/components/layouts/MainLayout";
 import { fetchElibrary } from "@/service/elibrary";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { RiArrowDownSLine } from "react-icons/ri";
 
-export default function Elibrary() {
+function Elibrary() {
   const [books, setBooks] = useState([]);
   const [totalData, setTotalData] = useState(0);
   const searchParams = useSearchParams();
@@ -70,73 +70,67 @@ export default function Elibrary() {
               totalData={totalData}
             />
             <div className="overflow-x-auto mb-2">
-              <table className="w-full text-left rtl:text-right text-gray-500 border-separate border-spacing-0 text-xs mb-1">
-                <thead className=" text-gray-700 uppercase bg-gray-50 text-center">
-                  <tr className="bg-neutral-200">
+              <table className="w-full text-left rtl:text-right text-gray-500 text-xs mb-1 border-separate border-spacing-0">
+                <thead className=" text-white uppercase bg-primary-1 text-center">
+                  <tr className="">
                     <th
                       scope="col"
-                      className="px-3 py-2.5 border border-r-0 border-black rounded-tl-lg font-semibold w-10 whitespace-nowrap"
+                      className="px-3 py-3 border border-r-0 text-start border-black rounded-l-lg font-semibold w-10 whitespace-nowrap"
                     >
                       No
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2.5 border border-r-0 border-black font-semibold"
+                      className="px-3 py-3 border-y text-start border-black font-semibold whitespace-nowrap "
                     >
-                      E-book Title
+                      Title
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2.5 border border-r-0 border-black font-semibold"
+                      className="px-3 py-3 border-y text-start border-black font-semibold whitespace-nowrap"
                     >
-                      E-book Type
+                      Type
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2.5 border border-r-0 border-black font-semibold"
+                      className="px-3 py-3 border-y text-start border-black font-semibold whitespace-nowrap"
                     >
                       Competence Group
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2.5 border border-r-0 border-black font-semibold"
+                      className="px-3 py-3 border-y text-start border-black font-semibold whitespace-nowrap"
                     >
                       Competence Name
                     </th>
                     <th
                       scope="col"
-                      className="px-3 py-2.5 text-center border border-black rounded-tr-lg w-28 font-semibold"
+                      className="ps-3 pe-6 py-3 text-start border border-l-0 border-black rounded-r-lg font-semibold"
                     >
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="[&>*:nth-child(even)]:bg-neutral-200">
+                <tbody>
                   {books.map((book, index) => (
                     <tr key={index}>
-                      <td
-                        className={`px-3 py-2.5 border border-t-0 border-r-0 border-black ${
-                          books.length === index + 1 && "rounded-bl-lg"
-                        }`}
-                      >
+                      <td className={`px-3 py-2.5 border-b border-black`}>
                         {book.no}
                       </td>
-                      <td className="px-3 py-2.5 border border-t-0 border-r-0 border-black break-words max-w-68">
+                      <td className="px-3 py-2.5 border-b border-black break-words min-w-40 max-w-[20rem]">
                         {book.title}
                       </td>
-                      <td className="px-3 py-2.5 border border-t-0 border-r-0 border-black break-words">
+                      <td className="px-3 py-2.5 border-b border-black break-words">
                         {book.type}
                       </td>
-                      <td className="px-3 py-2.5 border border-t-0 border-r-0 border-black break-words">
+                      <td className="px-3 py-2.5 border-b border-black break-words">
                         {book.competence.group}
                       </td>
-                      <td className="px-3 py-2.5 border border-t-0 border-r-0 border-black break-words">
+                      <td className="px-3 py-2.5 border-b border-black break-words">
                         {book.competence.name}
                       </td>
                       <td
-                        className={`px-3 py-2.5 text-center border border-t-0 border-black text-blue-600 font-semibold ${
-                          books.length === index + 1 ? "rounded-br-lg" : ""
-                        }`}
+                        className={`ps-3 pe-6 py-2.5 text-start border-b border-black text-primary-1 font-semibold`}
                       >
                         <Link href="/request-history/view/1">View</Link>
                       </td>
@@ -150,5 +144,13 @@ export default function Elibrary() {
         )}
       </ContentLayout>
     </MainLayout>
+  );
+}
+
+export default function ElibraryPage() {
+  return (
+    <Suspense>
+      <Elibrary />
+    </Suspense>
   );
 }

@@ -9,7 +9,9 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginService } from "@/service/authentication";
 import { useRouter } from "next/navigation";
-import { setCookies } from "@/utils/setCookies";
+import { setCookies } from "@/utils/cookies";
+
+import { getProfileService } from "@/service/profile";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
@@ -20,6 +22,7 @@ export default function LoginForm() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!username || !password) {
       dispatch(
@@ -32,7 +35,6 @@ export default function LoginForm() {
       return;
     }
 
-    setIsLoading(true);
     try {
       const response = await loginService(username, password);
       console.log(response);
@@ -57,6 +59,10 @@ export default function LoginForm() {
         return;
       }
       if (response.statusCode === 201) {
+        await setCookies("access_token", response.result.access_token);
+        await setCookies("refresh_token", response.result.refresh_token);
+        await setCookies("username", username);
+
         dispatch(
           showToastWithTimeout({
             type: "success",
@@ -64,8 +70,6 @@ export default function LoginForm() {
             duration: 6000,
           })
         );
-        await setCookies("access_token", response.result.access_token);
-        await setCookies("refresh_token", response.result.refresh_token);
         router.push("/");
       }
     } catch (e) {
@@ -76,12 +80,12 @@ export default function LoginForm() {
   };
 
   return (
-    <form className="w-full">
+    <form className="w-full max-w-[26rem]">
       <AuthInput
         id="username"
         label="Username"
         placeholder="Enter your username"
-        icon={<IoMailOutline className="w-4 h-4 text-[#606060]" />}
+        icon={<IoMailOutline className="w-4 h-4" />}
         value={username}
         setValue={setUsername}
         className="mb-5"
@@ -89,21 +93,24 @@ export default function LoginForm() {
 
       <AuthInput
         id="password"
-        iType="password"
+        type="password"
         label="Password"
         placeholder="Enter your password"
-        icon={<RiLockPasswordLine className="w-4 h-4 text-[#606060]" />}
+        icon={<RiLockPasswordLine className="w-4 h-4" />}
         value={password}
         setValue={setPassword}
       />
-      <Link
-        href="#"
-        className="block text-end border-2 text-sm text-[#757575] font-semibold mt-1 mb-3"
-      >
-        Forgot password?
-      </Link>
+      <div className="flex justify-end">
+        <Link
+          href="#"
+          className=" text-end text-sm text-grey-primary hover:text-grey-secondary font-semibold mt-1 mb-3"
+        >
+          Forgot password?
+        </Link>
+      </div>
+
       <button
-        className="bg-[#D2D2D2] hover:bg-[#bdbdbd] text-white w-full rounded-full py-2 text-sm font-semibold mb-2 flex items-center justify-center gap-1"
+        className="bg-primary-1 hover:bg-primary-1-hover text-white w-full rounded-full py-2 text-sm font-semibold mb-2 flex items-center justify-center gap-1"
         onClick={(e) => handleLogin(e)}
         disabled={isLoading}
       >
@@ -115,9 +122,12 @@ export default function LoginForm() {
           "Login"
         )}
       </button>
-      <p className="text-center text-sm text-[#757575]">
+      <p className="text-center text-sm text-grey-tertiary">
         don&apos;t have an account?{" "}
-        <Link href="/register" className="font-bold">
+        <Link
+          href="/register"
+          className="font-bold text-grey-primary hover:text-grey-secondary"
+        >
           Sign Up
         </Link>
       </p>

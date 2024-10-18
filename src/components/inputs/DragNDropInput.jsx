@@ -2,7 +2,7 @@
 
 import { showToastWithTimeout } from "@/lib/slices/toastSlice";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 
@@ -15,27 +15,6 @@ export default function DragNDropInput({
   required = false,
 }) {
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (!stateFile && stateFile !== null) {
-      throw new Error(
-        "The 'stateFile' prop is required in DragNDropInput component."
-      );
-    }
-    if (!setStateFile) {
-      throw new Error(
-        "The 'setStateFile' prop is required in DragNDropInput component."
-      );
-    }
-    if (!id) {
-      throw new Error("The 'id' prop is required in DragNDropInput component.");
-    }
-    if (!label) {
-      throw new Error(
-        "The 'label' prop is required in DragNDropInput component."
-      );
-    }
-  }, [stateFile, setStateFile, id, label]);
-
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef(null);
 
@@ -136,7 +115,7 @@ export default function DragNDropInput({
       </label>
       <div
         className={`relative border-2 p-4 w-full flex flex-col items-center gap-2 text-center text-xs mt-2 text-neutral-600 ${
-          isDragging ? "border-blue-500" : "border-gray-300"
+          !isDragging ? "border-grey-2" : "border-primary-1"
         } rounded-md cursor-pointer`}
         onDragOver={(e) => handleDragOver(e, "ebook")}
         onDragLeave={handleDragLeave}
@@ -162,7 +141,7 @@ export default function DragNDropInput({
           <p>
             Drag & Drop {type} file here <br /> or <br /> Click{" "}
             <button
-              className="text-blue-600 hover:underline font-medium"
+              className="text-primary-1 hover:underline font-medium"
               onClick={(e) => handleClick(e, "ebook")}
             >
               here

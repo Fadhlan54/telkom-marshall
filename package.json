@@ -13,6 +13,8 @@
     "@reduxjs/toolkit": "^2.2.7",
     "@tailwindcss/line-clamp": "^0.4.4",
     "axios": "^1.7.7",
+    "html-react-parser": "^5.1.18",
+    "jodit-react": "^4.1.2",
     "js-cookie": "^3.0.5",
     "next": "^14.2.11",
     "react": "^18",

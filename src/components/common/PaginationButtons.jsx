@@ -59,7 +59,7 @@ export default function PaginationButtons({ totalData }) {
           key={i}
           onClick={() => handlePageChange(i)}
           className={`px-2 py-1 rounded ${
-            page === i ? "bg-neutral-400" : "text-black"
+            page === i ? "bg-primary-1 text-white" : "text-black"
           }`}
         >
           {i}

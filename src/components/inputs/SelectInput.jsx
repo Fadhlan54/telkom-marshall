@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { RiArrowDownSLine } from "react-icons/ri";
 
 export default function SelectInput({
@@ -32,7 +32,7 @@ export default function SelectInput({
         <select
           name={id}
           id={id}
-          className={`w-full border-2  border-neutral-400 p-2 rounded-lg appearance-none ${
+          className={`w-full border-2  border-neutral-400 p-2 rounded-lg focus:outline-primary-1 appearance-none ${
             !value && placeholder ? "text-neutral-400 " : "text-black"
           }`}
           ref={selectRef}

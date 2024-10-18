@@ -32,7 +32,7 @@ export default function MultiSelectInput({
         <select
           name={id}
           id={id}
-          className={`w-full border-2  border-neutral-400 p-2 rounded-lg appearance-none text-neutral-400 `}
+          className={`w-full border-2  border-neutral-400 p-2 rounded-lg appearance-none text-neutral-400 focus:outline-primary-1`}
           ref={selectRef}
           onChange={(e) => {
             handleSelectChange(e);

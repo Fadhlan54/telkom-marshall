@@ -31,15 +31,15 @@ export default function AuthInput({
           className={`inline-flex items-center ps-3.5 bg-transparent border border-e-0  rounded-s-full ${
             errorMessage
               ? "text-alert-danger border-alert-danger"
-              : "text-gray-900 border-gray-300"
+              : "text-primary-1 border-primary-1"
           }`}
         >
           {icon}
         </label>
         <label
           htmlFor={id}
-          className={`block text-sm absolute top-0 left-9 -translate-y-1/2 px-1 font-semibold bg-[#E8E8E8] ${
-            errorMessage ? "text-alert-danger" : "text-[#757575]"
+          className={`block text-sm absolute top-0 left-9 -translate-y-1/2 px-1 font-semibold bg-white ${
+            errorMessage ? "text-alert-danger" : "text-primary-1"
           }`}
         >
           {label}
@@ -49,8 +49,8 @@ export default function AuthInput({
             type === "password" ? (showPassword ? "text" : "password") : type
           }
           id={id}
-          className={`rounded-e-full border-s-0 bg-transparent border  text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5 py-3.5 outline-none   ${
-            errorMessage ? " border-alert-danger" : " border-gray-300"
+          className={`rounded-e-full border-s-0 bg-transparent border  text-gray-900 block flex-1 w-full text-sm p-2.5 py-3.5 outline-none   ${
+            errorMessage ? " border-alert-danger" : " border-primary-1"
           }`}
           placeholder={placeholder}
           value={value}
@@ -61,7 +61,7 @@ export default function AuthInput({
         {type === "password" && (
           <div className="absolute right-0 pe-4 top-1/2 -translate-y-1/2  h-full flex items-center">
             <button
-              className=" text-[#606060] hover:text-[#2b2b2b]"
+              className=" text-primary-1 hover:text-primary-1-hover"
               type="button"
               onClick={(e) => toggleShowPassword(e)}
               onKeyDown={(e) => {

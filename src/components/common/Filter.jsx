@@ -36,7 +36,7 @@ export default function Filter({ children }) {
     <div className="relative w-fit ml-2">
       <button
         className={`border border-neutral-400 px-2 rounded-md flex items-center h-full ${
-          isFilterVisible ? "outline outline-3 outline-blue-500" : ""
+          isFilterVisible ? "outline outline-3 outline-primary-1" : ""
         }`}
         onClick={(e) => toggleFilter(e)}
         ref={buttonFilterRef}
