@@ -9,7 +9,7 @@ import Stepper from "@/components/common/Stepper";
 import EditorContentForm from "@/components/forms/EditorContentForm";
 
 export default function ModulePage() {
-  const [currentStep, setCurrentStep] = useState(3);
+  const [currentStep, setCurrentStep] = useState(1);
 
   return (
     <MainLayout>

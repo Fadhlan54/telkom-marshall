@@ -3,7 +3,6 @@ import ContentLayout from "@/components/layouts/ContentLayout";
 import MainLayout from "@/components/layouts/MainLayout";
 import Image from "next/image";
 import Link from "next/link";
-import { BiLoaderCircle } from "react-icons/bi";
 
 export default function ModuleDetailsPage() {
   return (
